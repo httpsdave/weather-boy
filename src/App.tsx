@@ -1,7 +1,7 @@
-import { Cloud, Settings as SettingsIcon, Star, RefreshCw, WifiOff } from 'lucide-react';
+import { Cloud, Settings as SettingsIcon, Star, RefreshCw, WifiOff, Sun, Moon, TrendingUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useWeather } from './hooks/useWeather';
-import { storageService, TemperatureUnit, WindSpeedUnit } from './services/storageService';
+import { storageService, TemperatureUnit, WindSpeedUnit, PrecipitationUnit } from './services/storageService';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
 import HourlyForecast from './components/HourlyForecast';
 import DailyForecast from './components/DailyForecast';
@@ -14,6 +14,12 @@ import WeatherSkeleton from './components/WeatherSkeleton';
 import SavedLocations from './components/SavedLocations';
 import AirQualityCard from './components/AirQualityCard';
 import ShareWeather from './components/ShareWeather';
+import ComparisonWidget from './components/ComparisonWidget';
+import TemperatureChart from './components/TemperatureChart';
+import WeatherAlerts from './components/WeatherAlerts';
+import PullToRefresh from './components/PullToRefresh';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { useTheme } from './contexts/ThemeContext';
 import { weatherService } from './services/weatherService';
 
 function App() {
@@ -27,14 +33,20 @@ function App() {
     retryFetch,
   } = useWeather();
 
+  const { theme, setTheme, effectiveTheme } = useTheme();
+
   const [temperatureUnit, setTemperatureUnit] = useState<TemperatureUnit>(
     storageService.getPreferences().temperatureUnit
   );
   const [windSpeedUnit, setWindSpeedUnit] = useState<WindSpeedUnit>(
     storageService.getPreferences().windSpeedUnit
   );
+  const [precipitationUnit, setPrecipitationUnit] = useState<PrecipitationUnit>(
+    storageService.getPreferences().precipitationUnit
+  );
   const [showSettings, setShowSettings] = useState(false);
   const [showSavedLocations, setShowSavedLocations] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
@@ -74,6 +86,11 @@ function App() {
     storageService.savePreferences({ windSpeedUnit: unit });
   };
 
+  const handlePrecipitationUnitChange = (unit: PrecipitationUnit) => {
+    setPrecipitationUnit(unit);
+    storageService.savePreferences({ precipitationUnit: unit });
+  };
+
   const handleRefresh = async () => {
     if (currentLocation && !isRefreshing) {
       setIsRefreshing(true);
@@ -82,6 +99,22 @@ function App() {
       setTimeout(() => setIsRefreshing(false), 1000);
     }
   };
+
+  const toggleTheme = () => {
+    // Simple toggle between light and dark
+    setTheme(effectiveTheme === 'light' ? 'dark' : 'light');
+  };
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts([
+    { key: 'r', ctrl: true, callback: handleRefresh },
+    { key: '/', callback: () => document.querySelector<HTMLInputElement>('input[type="text"]')?.focus() },
+    { key: 'Escape', callback: () => { setShowSettings(false); setShowSavedLocations(false); setShowComparison(false); } },
+    { key: 's', callback: () => setShowSettings(true) },
+    { key: 'l', callback: () => setShowSavedLocations(true) },
+    { key: 'd', callback: toggleTheme },
+    { key: 'c', callback: () => setShowComparison(true) },
+  ]);
 
   const getTimeSinceUpdate = () => {
     if (!lastUpdated) return '';
@@ -96,66 +129,86 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between max-w-7xl mx-auto">
-              <div className="flex items-center space-x-3">
-                <Cloud className="w-8 h-8 text-weather-blue" />
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-weather-blue to-blue-600 bg-clip-text text-transparent">
-                    Weather Boy
-                  </h1>
-                  <div className="flex items-center space-x-2">
-                    <p className="text-xs text-gray-600 hidden md:block">
-                      Your friendly weather companion
-                    </p>
-                    {!isOnline && (
-                      <div className="flex items-center space-x-1 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
-                        <WifiOff className="w-3 h-3" />
-                        <span>Offline</span>
-                      </div>
-                    )}
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
+          {/* Header */}
+          <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+            <div className="container mx-auto px-4 py-4">
+              <div className="flex items-center justify-between max-w-7xl mx-auto">
+                <div className="flex items-center space-x-3">
+                  <Cloud className="w-8 h-8 text-weather-blue" />
+                  <div>
+                    <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-weather-blue to-blue-600 bg-clip-text text-transparent">
+                      Weather Boy
+                    </h1>
+                    <div className="flex items-center space-x-2">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 hidden md:block">
+                        Your friendly weather companion
+                      </p>
+                      {!isOnline && (
+                        <div className="flex items-center space-x-1 text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded">
+                          <WifiOff className="w-3 h-3" />
+                          <span>Offline</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setShowSavedLocations(!showSavedLocations)}
-                  className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
-                  aria-label="Open saved locations"
-                >
-                  <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600'}`} />
-                </button>
-                {weatherData && currentLocation && (
-                  <ShareWeather
-                    weather={weatherData.current}
-                    location={currentLocation}
-                    temperatureUnit={temperatureUnit}
-                  />
-                )}
-                {weatherData && (
+                <div className="flex items-center space-x-2">
                   <button
-                    onClick={handleRefresh}
-                    disabled={isRefreshing}
-                    className="p-3 hover:bg-gray-100 rounded-xl transition-colors disabled:opacity-50"
-                    aria-label="Refresh weather data"
+                    onClick={() => setShowComparison(!showComparison)}
+                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    aria-label="Compare locations"
                   >
-                    <RefreshCw className={`w-6 h-6 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    <TrendingUp className={`w-6 h-6 ${showComparison ? 'text-weather-blue' : 'text-gray-600 dark:text-gray-300'}`} />
                   </button>
-                )}
-                <button
-                  onClick={() => setShowSettings(!showSettings)}
-                  className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
-                  aria-label="Open settings"
-                >
-                  <SettingsIcon className="w-6 h-6 text-gray-600" />
-                </button>
+                  <button
+                    onClick={toggleTheme}
+                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    aria-label="Toggle theme"
+                    title={`Theme: ${theme}`}
+                  >
+                    {effectiveTheme === 'dark' ? (
+                      <Moon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                    ) : (
+                      <Sun className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setShowSavedLocations(!showSavedLocations)}
+                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    aria-label="Open saved locations"
+                  >
+                    <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600 dark:text-gray-300'}`} />
+                  </button>
+                  {weatherData && currentLocation && (
+                    <ShareWeather
+                      weather={weatherData.current}
+                      location={currentLocation}
+                      temperatureUnit={temperatureUnit}
+                    />
+                  )}
+                  {weatherData && (
+                    <button
+                      onClick={handleRefresh}
+                      disabled={isRefreshing}
+                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50"
+                      aria-label="Refresh weather data"
+                    >
+                      <RefreshCw className={`w-6 h-6 text-gray-600 dark:text-gray-300 ${isRefreshing ? 'animate-spin' : ''}`} />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setShowSettings(!showSettings)}
+                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    aria-label="Open settings"
+                  >
+                    <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </header>
+          </header>
 
         <SavedLocations
           onLocationSelect={handleLocationSelect}
@@ -167,90 +220,110 @@ function App() {
         <SettingsPanel
           temperatureUnit={temperatureUnit}
           windSpeedUnit={windSpeedUnit}
-          onTemperatureUnitChange={handleTemperatureUnitChange}
-          onWindSpeedUnitChange={handleWindSpeedUnitChange}
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-8 max-w-7xl" role="main">
-          <SearchBar
-            onLocationSelect={handleLocationSelect}
-            onUseCurrentLocation={useCurrentLocation}
-            isLoadingLocation={loading && !weatherData}
+            precipitationUnit={precipitationUnit}
+            onTemperatureUnitChange={handleTemperatureUnitChange}
+            onWindSpeedUnitChange={handleWindSpeedUnitChange}
+            onPrecipitationUnitChange={handlePrecipitationUnitChange}
+            isOpen={showSettings}
+            onClose={() => setShowSettings(false)}
           />
 
-          {lastUpdated && weatherData && (
-            <div className="text-center text-sm text-gray-500 mb-4">
-              Updated {getTimeSinceUpdate()}
-            </div>
-          )}
+          <ComparisonWidget
+            isOpen={showComparison}
+            onClose={() => setShowComparison(false)}
+            temperatureUnit={temperatureUnit}
+            windSpeedUnit={windSpeedUnit}
+          />
 
-          {loading && !weatherData && <WeatherSkeleton />}
+          {/* Main Content */}
+          <main className="container mx-auto px-4 py-8 max-w-7xl" role="main">
+            <SearchBar
+              onLocationSelect={handleLocationSelect}
+              onUseCurrentLocation={useCurrentLocation}
+              isLoadingLocation={loading && !weatherData}
+              temperatureUnit={temperatureUnit}
+            />
 
-          {error && !weatherData && (
-            <ErrorMessage message={error} onRetry={retryFetch} />
-          )}
+            {lastUpdated && weatherData && (
+              <div className="text-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                Updated {getTimeSinceUpdate()}
+              </div>
+            )}
 
-          {weatherData && (
-            <div className="space-y-6">
-              <CurrentWeatherCard
-                weather={weatherData.current}
-                locationName={currentLocation?.name || 'Unknown Location'}
-                humidity={weatherData.hourly.relative_humidity_2m[0]}
-                temperatureUnit={temperatureUnit}
-                windSpeedUnit={windSpeedUnit}
-              />
+            {loading && !weatherData && <WeatherSkeleton />}
 
-              <WeatherDetails
-                weather={weatherData.current}
-                sunrise={weatherData.daily.sunrise[0]}
-                sunset={weatherData.daily.sunset[0]}
-                humidity={weatherData.hourly.relative_humidity_2m[0]}
-                temperatureUnit={temperatureUnit}
-                windSpeedUnit={windSpeedUnit}
-              />
+            {error && !weatherData && (
+              <ErrorMessage message={error} onRetry={retryFetch} />
+            )}
 
-              {currentLocation && (
-                <AirQualityCard
-                  latitude={currentLocation.latitude}
-                  longitude={currentLocation.longitude}
+            {weatherData && (
+              <div className="space-y-6">
+                <CurrentWeatherCard
+                  weather={weatherData.current}
+                  locationName={currentLocation?.name || 'Unknown Location'}
+                  humidity={weatherData.hourly.relative_humidity_2m[0]}
+                  temperatureUnit={temperatureUnit}
+                  windSpeedUnit={windSpeedUnit}
                 />
-              )}
 
-              <HourlyForecast
-                hourly={weatherData.hourly}
-                temperatureUnit={temperatureUnit}
-                windSpeedUnit={windSpeedUnit}
-              />
+                <WeatherDetails
+                  weather={weatherData.current}
+                  sunrise={weatherData.daily.sunrise[0]}
+                  sunset={weatherData.daily.sunset[0]}
+                  humidity={weatherData.hourly.relative_humidity_2m[0]}
+                  temperatureUnit={temperatureUnit}
+                  windSpeedUnit={windSpeedUnit}
+                />
 
-              <DailyForecast
-                daily={weatherData.daily}
-                temperatureUnit={temperatureUnit}
-              />
+                <TemperatureChart
+                  hourly={weatherData.hourly}
+                  temperatureUnit={temperatureUnit}
+                  hours={24}
+                />
+
+                {currentLocation && (
+                  <AirQualityCard
+                    latitude={currentLocation.latitude}
+                    longitude={currentLocation.longitude}
+                  />
+                )}
+
+                <HourlyForecast
+                  hourly={weatherData.hourly}
+                  temperatureUnit={temperatureUnit}
+                  windSpeedUnit={windSpeedUnit}
+                />
+
+                <DailyForecast
+                  daily={weatherData.daily}
+                  hourly={weatherData.hourly}
+                  temperatureUnit={temperatureUnit}
+                />
+              </div>
+            )}
+          </main>
+
+          <WeatherAlerts weather={weatherData} />
+
+          {/* Footer */}
+          <footer className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md mt-16 py-6" role="contentinfo">
+            <div className="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400">
+              <p className="text-sm">
+                Weather data provided by{' '}
+                <a
+                  href="https://open-meteo.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-weather-blue hover:underline font-medium"
+                >
+                  Open-Meteo
+                </a>
+              </p>
+              <p className="text-xs mt-2">Weather Boy © 2025</p>
             </div>
-          )}
-        </main>
-
-        {/* Footer */}
-        <footer className="bg-white/80 backdrop-blur-md mt-16 py-6" role="contentinfo">
-          <div className="container mx-auto px-4 text-center text-gray-600">
-            <p className="text-sm">
-              Weather data provided by{' '}
-              <a
-                href="https://open-meteo.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-weather-blue hover:underline font-medium"
-              >
-                Open-Meteo
-              </a>
-            </p>
-            <p className="text-xs mt-2">Weather Boy © 2025</p>
-          </div>
-        </footer>
-      </div>
+          </footer>
+        </div>
+      </PullToRefresh>
     </ErrorBoundary>
   );
 }

@@ -3,6 +3,7 @@ import { Share2 } from 'lucide-react';
 import { CurrentWeather, Location } from '../types/weather';
 import { storageService, TemperatureUnit } from '../services/storageService';
 import { weatherService } from '../services/weatherService';
+import { useToast } from './Toast';
 
 interface ShareWeatherProps {
   weather: CurrentWeather;
@@ -11,6 +12,8 @@ interface ShareWeatherProps {
 }
 
 const ShareWeather: React.FC<ShareWeatherProps> = ({ weather, location, temperatureUnit }) => {
+  const { showToast } = useToast();
+  
   const handleShare = async () => {
     const temp = storageService.convertTemperature(weather.temperature_2m, temperatureUnit);
     const tempSymbol = storageService.getTemperatureSymbol(temperatureUnit);
@@ -39,20 +42,20 @@ const ShareWeather: React.FC<ShareWeatherProps> = ({ weather, location, temperat
 
   const fallbackShare = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
-      alert('Weather info copied to clipboard!');
+      showToast('Weather info copied to clipboard!', 'success');
     }).catch(() => {
-      alert('Unable to share. Please copy manually:\n\n' + text);
+      showToast('Unable to copy to clipboard', 'error');
     });
   };
 
   return (
     <button
       onClick={handleShare}
-      className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
+      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
       aria-label="Share weather"
       title="Share weather"
     >
-      <Share2 className="w-6 h-6 text-gray-600" />
+      <Share2 className="w-6 h-6 text-gray-600 dark:text-gray-300" />
     </button>
   );
 };

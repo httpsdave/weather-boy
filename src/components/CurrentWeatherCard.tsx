@@ -29,7 +29,7 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   const windSymbol = storageService.getWindSpeedSymbol(windSpeedUnit);
 
   return (
-    <div className="bg-gradient-to-br from-weather-blue to-blue-600 rounded-3xl p-6 md:p-8 text-white shadow-2xl animate-fade-in">
+    <div className="bg-gradient-to-br from-weather-blue to-blue-600 dark:from-blue-800 dark:to-blue-900 rounded-3xl p-6 md:p-8 text-white shadow-2xl animate-fade-in">
       <div className="flex flex-col items-center">
         <h2 className="text-xl md:text-2xl font-medium mb-2">{locationName}</h2>
         <div className="text-7xl md:text-8xl my-4">{weatherInfo.icon}</div>
@@ -39,7 +39,7 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
         <p className="text-xl md:text-2xl mb-6 capitalize">{weatherInfo.description}</p>
         
         <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3">
+          <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3">
             <Wind className="w-6 h-6" />
             <div>
               <p className="text-xs opacity-80">Wind</p>
@@ -48,7 +48,7 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
           </div>
           
           {humidity !== undefined && (
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3">
+            <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-4 flex items-center space-x-3">
               <Droplets className="w-6 h-6" />
               <div>
                 <p className="text-xs opacity-80">Humidity</p>

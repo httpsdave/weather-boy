@@ -16,9 +16,9 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
   const displayHours = showExtended ? next48Hours : hourly.time.slice(0, 24);
 
   return (
-    <div className="bg-white rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
+    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg md:text-xl font-bold text-gray-800">Hourly Forecast</h3>
+        <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white">Hourly Forecast</h3>
         <button
           onClick={() => setShowExtended(!showExtended)}
           className="text-xs md:text-sm text-weather-blue hover:text-blue-600 font-medium"
@@ -43,16 +43,16 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
             return (
               <div
                 key={time}
-                className="flex flex-col items-center bg-gray-50 rounded-2xl p-3 md:p-4 min-w-[90px] md:min-w-[100px] hover:bg-blue-50 transition-colors active:scale-95"
+                className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-2xl p-3 md:p-4 min-w-[90px] md:min-w-[100px] hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors active:scale-95"
               >
-                <p className="text-xs md:text-sm font-medium text-gray-600 mb-2">
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                   {format(parseISO(time), 'HH:mm')}
                 </p>
                 <div className="text-2xl md:text-3xl my-2">{weatherInfo.icon}</div>
-                <p className="text-base md:text-lg font-bold text-gray-800">
+                <p className="text-base md:text-lg font-bold text-gray-800 dark:text-white">
                   {Math.round(temp)}°
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-gray-400">
                   Feels {Math.round(feelsLike)}°
                 </p>
                 {precipAmount > 0 && (
@@ -65,7 +65,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
                     💧 {Math.round(precipProb)}%
                   </div>
                 )}
-                <div className="flex flex-col items-center text-xs text-gray-500 mt-2 space-y-1">
+                <div className="flex flex-col items-center text-xs text-gray-500 dark:text-gray-400 mt-2 space-y-1">
                   <span>💨 {Math.round(windSpeed)}</span>
                   {windGust > windSpeed + 5 && (
                     <span className="text-orange-600 font-medium">
@@ -73,7 +73,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
                     </span>
                   )}
                   {visibility < 10 && (
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 dark:text-gray-300">
                       👁️ {visibility.toFixed(1)}km
                     </span>
                   )}

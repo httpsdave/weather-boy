@@ -95,22 +95,22 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
-      <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4">Weather Details</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
+      <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-4">Weather Details</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         {details.map((detail, index) => (
           <div
             key={index}
-            className={`bg-gray-50 rounded-xl md:rounded-2xl p-3 md:p-4 hover:bg-blue-50 transition-colors active:scale-95 ${
+            className={`bg-gray-50 dark:bg-gray-700 rounded-xl md:rounded-2xl p-3 md:p-4 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors active:scale-95 ${
               detail.highlight ? 'ring-2 ring-orange-400' : ''
             }`}
           >
             <div className="flex items-center space-x-1 md:space-x-2 text-weather-blue mb-1 md:mb-2">
               {detail.icon}
-              <span className="text-xs font-medium text-gray-600">{detail.label}</span>
+              <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{detail.label}</span>
             </div>
             <p className={`text-base md:text-lg font-bold break-words ${
-              detail.highlight ? 'text-orange-600' : 'text-gray-800'
+              detail.highlight ? 'text-orange-600' : 'text-gray-800 dark:text-white'
             }`}>{detail.value}</p>
           </div>
         ))}

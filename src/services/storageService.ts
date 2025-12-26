@@ -1,9 +1,11 @@
 export type TemperatureUnit = 'celsius' | 'fahrenheit';
 export type WindSpeedUnit = 'kmh' | 'mph';
+export type PrecipitationUnit = 'mm' | 'inches';
 
 export interface UserPreferences {
   temperatureUnit: TemperatureUnit;
   windSpeedUnit: WindSpeedUnit;
+  precipitationUnit: PrecipitationUnit;
   lastLocation?: {
     name: string;
     latitude: number;
@@ -50,6 +52,7 @@ export const storageService = {
     return {
       temperatureUnit: 'celsius',
       windSpeedUnit: 'kmh',
+      precipitationUnit: 'mm',
     };
   },
 
@@ -67,12 +70,23 @@ export const storageService = {
     return kmh;
   },
 
+  convertPrecipitation(mm: number, unit: PrecipitationUnit): number {
+    if (unit === 'inches') {
+      return mm * 0.0393701;
+    }
+    return mm;
+  },
+
   getTemperatureSymbol(unit: TemperatureUnit): string {
     return unit === 'celsius' ? '°C' : '°F';
   },
 
   getWindSpeedSymbol(unit: WindSpeedUnit): string {
     return unit === 'kmh' ? 'km/h' : 'mph';
+  },
+
+  getPrecipitationSymbol(unit: PrecipitationUnit): string {
+    return unit === 'mm' ? 'mm' : 'in';
   },
 
   addRecentSearch(location: { name: string; latitude: number; longitude: number; country: string }): void {
