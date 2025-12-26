@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Wind } from 'lucide-react';
+import { RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
 import { weatherService } from '../services/weatherService';
 import { AirQuality } from '../types/weather';
 
@@ -24,9 +24,9 @@ const AirQualityCard: React.FC<AirQualityCardProps> = ({ latitude, longitude }) 
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-gray-800 rounded-[28px] p-6 md:p-8 shadow-card animate-pulse">
-        <div className="h-6 bg-gradient-to-r from-gray-300 to-gray-200 dark:from-gray-600 dark:to-gray-700 rounded-full w-32 mb-4"></div>
-        <div className="h-24 bg-gradient-to-br from-gray-200 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-2xl"></div>
+      <div className="animate-pulse">
+        <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-32 mb-4"></div>
+        <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded"></div>
       </div>
     );
   }
@@ -34,39 +34,104 @@ const AirQualityCard: React.FC<AirQualityCardProps> = ({ latitude, longitude }) 
   if (!airQuality) return null;
 
   const aqiInfo = weatherService.getAQILevel(airQuality.us_aqi);
+  const aqiValue = Math.round(airQuality.us_aqi);
+  
+  // Prepare data for radial chart
+  const maxAQI = 300;
+  const chartData = [
+    {
+      name: 'AQI',
+      value: Math.min(aqiValue, maxAQI),
+      fill: aqiInfo.color.includes('green') ? '#00E400' :
+            aqiInfo.color.includes('yellow') ? '#FFFF00' :
+            aqiInfo.color.includes('orange') ? '#FF7E00' :
+            aqiInfo.color.includes('red') && !aqiInfo.color.includes('dark') ? '#FF0000' :
+            aqiInfo.color.includes('purple') ? '#8F3F97' : '#7E0023',
+    },
+  ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-[28px] p-6 md:p-8 shadow-card hover:shadow-card-hover transition-shadow duration-300 animate-slide-up">
-      <div className="flex items-center space-x-3 mb-6">
-        <div className="bg-blue-500/20 p-2 rounded-xl">
-          <Wind className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-        </div>
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Air Quality</h3>
-      </div>
+    <div className="animate-slide-up">
+      <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6">Air Quality</h3>
       
-      <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-6 shadow-inner-glow">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-sm font-bold text-gray-600 dark:text-gray-300 mb-2 uppercase tracking-wide">US AQI</p>
+      <div className="flex flex-col items-center">
+        {/* Gauge Chart */}
+        <div className="relative">
+          <RadialBarChart
+            width={300}
+            height={180}
+            cx={150}
+            cy={150}
+            innerRadius={80}
+            outerRadius={130}
+            barSize={20}
+            data={chartData}
+            startAngle={180}
+            endAngle={0}
+          >
+            <PolarAngleAxis
+              type="number"
+              domain={[0, maxAQI]}
+              angleAxisId={0}
+              tick={false}
+            />
+            <RadialBar
+              background={{ fill: '#e5e7eb' }}
+              dataKey="value"
+              cornerRadius={10}
+            />
+          </RadialBarChart>
+          
+          {/* Center AQI value */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ top: '40%' }}>
             <p className={`text-5xl md:text-6xl font-bold ${aqiInfo.color}`}>
-              {Math.round(airQuality.us_aqi)}
+              {aqiValue}
             </p>
-          </div>
-          <div className="text-right">
-            <p className={`text-xl font-bold ${aqiInfo.color}`}>{aqiInfo.level}</p>
-            <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 max-w-[120px]">{aqiInfo.description}</p>
+            <p className={`text-lg font-bold mt-1 ${aqiInfo.color}`}>
+              {aqiInfo.level}
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow">
-            <p className="text-xs font-bold text-gray-600 dark:text-gray-300 mb-2 uppercase tracking-wide">PM2.5</p>
-            <p className="text-xl font-bold text-gray-900 dark:text-white">{airQuality.pm2_5?.toFixed(1) || 'N/A'}</p>
+        {/* AQI Scale Legend */}
+        <div className="grid grid-cols-3 gap-2 w-full max-w-md mt-4 text-xs">
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#00E400]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Good</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#FFFF00]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Moderate</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#FF7E00]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Unhealthy*</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#FF0000]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Unhealthy</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#8F3F97]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Very Unhealthy</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <div className="w-3 h-3 rounded-full bg-[#7E0023]"></div>
+            <span className="text-gray-600 dark:text-gray-400">Hazardous</span>
+          </div>
+        </div>
+
+        {/* Pollutant details */}
+        <div className="flex items-center space-x-8 mt-6 text-gray-700 dark:text-gray-300">
+          <div className="text-center">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">PM2.5</p>
+            <p className="text-2xl font-bold">{airQuality.pm2_5?.toFixed(1) || 'N/A'}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">μg/m³</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-card hover:shadow-card-hover transition-shadow">
-            <p className="text-xs font-bold text-gray-600 dark:text-gray-300 mb-2 uppercase tracking-wide">PM10</p>
-            <p className="text-xl font-bold text-gray-900 dark:text-white">{airQuality.pm10?.toFixed(1) || 'N/A'}</p>
+          <div className="w-px h-12 bg-gray-300 dark:bg-gray-600"></div>
+          <div className="text-center">
+            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">PM10</p>
+            <p className="text-2xl font-bold">{airQuality.pm10?.toFixed(1) || 'N/A'}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">μg/m³</p>
           </div>
         </div>
