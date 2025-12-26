@@ -3,7 +3,7 @@ import { Wind, Droplets } from 'lucide-react';
 import { CurrentWeather } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 import { storageService, TemperatureUnit, WindSpeedUnit } from '../services/storageService';
-import { getWeatherScene } from './WeatherIllustrations';
+import { getWeatherBackground } from './WeatherBackgrounds';
 
 interface CurrentWeatherCardProps {
   weather: CurrentWeather;
@@ -29,13 +29,13 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   const windSpeed = storageService.convertWindSpeed(weather.wind_speed_10m, windSpeedUnit);
   const windSymbol = storageService.getWindSpeedSymbol(windSpeedUnit);
 
-  const WeatherScene = getWeatherScene(weather.weather_code, weather.is_day === 1);
+  const WeatherBackground = getWeatherBackground(weather.weather_code, weather.is_day === 1);
 
   return (
     <div className="relative overflow-hidden rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] animate-fade-in">
       {/* Illustrated Weather Background */}
       <div className="absolute inset-0 z-0">
-        <WeatherScene className="w-full h-full object-cover" />
+        <WeatherBackground className="w-full h-full object-cover" />
       </div>
       
       {/* Content Overlay */}

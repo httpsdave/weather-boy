@@ -97,7 +97,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto mb-6 animate-fade-in">
+    <div className="relative w-full max-w-2xl mx-auto mb-6 animate-fade-in z-50">
       <div className="flex space-x-2">
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
