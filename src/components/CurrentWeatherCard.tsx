@@ -3,7 +3,6 @@ import { Wind, Droplets, ThermometerSun } from 'lucide-react';
 import { CurrentWeather, Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 import { storageService, TemperatureUnit, WindSpeedUnit } from '../services/storageService';
-import { getWeatherBackground } from './WeatherBackgrounds';
 import SearchBar from './SearchBar';
 
 interface CurrentWeatherCardProps {
@@ -36,18 +35,9 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   const windSpeed = storageService.convertWindSpeed(weather.wind_speed_10m, windSpeedUnit);
   const windSymbol = storageService.getWindSpeedSymbol(windSpeedUnit);
 
-  const WeatherBackground = getWeatherBackground(weather.weather_code, weather.is_day === 1);
-
   return (
-    <div className="relative overflow-hidden animate-fade-in">
-      {/* Illustrated Weather Background */}
-      <div className="absolute inset-0 z-0">
-        <WeatherBackground className="w-full h-full object-cover" />
-      </div>
-      
-      {/* Content Overlay with gradient fade */}
-      <div className="relative z-10 bg-gradient-to-b from-black/20 via-black/10 to-black/40 py-8 md:py-12">
-        <div className="container mx-auto px-4 max-w-7xl">
+    <div className="py-8 md:py-12">
+      <div className="container mx-auto px-4 max-w-7xl">
         {/* Integrated SearchBar */}
         <div className="mb-6">
           <SearchBar
@@ -100,7 +90,6 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

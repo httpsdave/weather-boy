@@ -21,6 +21,7 @@ import PullToRefresh from './components/PullToRefresh';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useTheme } from './contexts/ThemeContext';
 import { weatherService } from './services/weatherService';
+import { getWeatherBackground } from './components/WeatherBackgrounds';
 
 function App() {
   const {
@@ -147,105 +148,6 @@ function App() {
             effectiveTheme={effectiveTheme}
           />
 
-          {/* Header */}
-          <header className="bg-white dark:bg-gray-800 backdrop-blur-xl shadow-md sticky top-0 z-40 border-b border-gray-200 dark:border-gray-700">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center justify-between max-w-7xl mx-auto">
-                {/* Left: Hamburger (Mobile) + Logo */}
-                <div className="flex items-center space-x-3">
-                  {/* Hamburger Menu - Mobile Only */}
-                  <button
-                    onClick={() => setShowMobileSidebar(true)}
-                    className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-                    aria-label="Open menu"
-                  >
-                    <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
-                  </button>
-                  
-                  {/* Logo */}
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-blue-500 p-2 rounded-xl shadow-sm">
-                      <Cloud className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                    </div>
-                    <div>
-                      <h1 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white">
-                        Weather Boy
-                      </h1>
-                      {!isOnline && (
-                        <div className="flex items-center space-x-1 text-xs font-bold text-orange-600 bg-orange-100 dark:bg-orange-900/40 px-2 py-0.5 rounded-full">
-                          <WifiOff className="w-3 h-3" />
-                          <span className="hidden sm:inline">Offline</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right: Actions */}
-                <div className="flex items-center space-x-1 md:space-x-2">
-                  {/* Refresh Button - Always visible */}
-                  {weatherData && (
-                    <button
-                      onClick={handleRefresh}
-                      disabled={isRefreshing}
-                      className="p-2 md:p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50"
-                      aria-label="Refresh weather data"
-                    >
-                      <RefreshCw className={`w-5 h-5 md:w-6 md:h-6 text-gray-700 dark:text-gray-300 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    </button>
-                  )}
-
-                  {/* Desktop-only buttons */}
-                  <div className="hidden md:flex items-center space-x-2">
-                    <button
-                      onClick={() => setShowComparison(!showComparison)}
-                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-                      aria-label="Compare locations"
-                      title="Compare Locations"
-                    >
-                      <TrendingUp className={`w-6 h-6 ${showComparison ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300'}`} />
-                    </button>
-                    <button
-                      onClick={toggleTheme}
-                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-                      aria-label="Toggle theme"
-                      title={`Theme: ${theme}`}
-                    >
-                      {effectiveTheme === 'dark' ? (
-                        <Moon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                      ) : (
-                        <Sun className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                      )}
-                    </button>
-                    <button
-                      onClick={() => setShowSavedLocations(!showSavedLocations)}
-                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-                      aria-label="Open saved locations"
-                      title="Saved Locations"
-                    >
-                      <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600 dark:text-gray-300'}`} />
-                    </button>
-                    {weatherData && currentLocation && (
-                      <ShareWeather
-                        weather={weatherData.current}
-                        location={currentLocation}
-                        temperatureUnit={temperatureUnit}
-                      />
-                    )}
-                    <button
-                      onClick={() => setShowSettings(!showSettings)}
-                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
-                      aria-label="Open settings"
-                      title="Settings"
-                    >
-                      <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </header>
-
         <SavedLocations
           onLocationSelect={handleLocationSelect}
           currentLocation={currentLocation}
@@ -273,18 +175,130 @@ function App() {
 
           {/* Main Content */}
           <main role="main">
-            {/* Full-width Weather Card */}
+            {/* Full-width Weather Card with integrated header */}
             {weatherData && (
-              <CurrentWeatherCard
-                weather={weatherData.current}
-                locationName={currentLocation?.name || 'Unknown Location'}
-                humidity={weatherData.hourly.relative_humidity_2m[0]}
-                temperatureUnit={temperatureUnit}
-                windSpeedUnit={windSpeedUnit}
-                onLocationSelect={handleLocationSelect}
-                onUseCurrentLocation={useCurrentLocation}
-                isLoadingLocation={loading && !weatherData}
-              />
+              <div className="relative overflow-hidden animate-fade-in">
+                {/* Illustrated Weather Background - Extended to cover header */}
+                <div className="absolute inset-0 z-0">
+                  {(() => {
+                    const WeatherBackground = getWeatherBackground(
+                      weatherData.current.weather_code,
+                      weatherData.current.is_day === 1
+                    );
+                    return <WeatherBackground className="w-full h-full object-cover" />;
+                  })()}
+                </div>
+                
+                {/* Content Overlay with gradient fade */}
+                <div className="relative z-10 bg-gradient-to-b from-black/20 via-black/10 to-black/40">
+                  {/* Header integrated into weather background */}
+                  <header className="sticky top-0 z-40">
+                    <div className="container mx-auto px-4 py-4">
+                      <div className="flex items-center justify-between max-w-7xl mx-auto">
+                        {/* Left: Hamburger (Mobile) + Logo */}
+                        <div className="flex items-center space-x-3">
+                          {/* Hamburger Menu - Mobile Only */}
+                          <button
+                            onClick={() => setShowMobileSidebar(true)}
+                            className="md:hidden p-2 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                            aria-label="Open menu"
+                          >
+                            <Menu className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                          </button>
+                          
+                          {/* Logo */}
+                          <div className="flex items-center space-x-2">
+                            <div className="bg-white/30 backdrop-blur-md p-2 rounded-xl shadow-lg border border-white/40">
+                              <Cloud className="w-6 h-6 md:w-7 md:h-7 text-white drop-shadow-md" />
+                            </div>
+                            <div>
+                              <h1 className="text-lg md:text-2xl font-bold text-white drop-shadow-lg">
+                                Weather Boy
+                              </h1>
+                              {!isOnline && (
+                                <div className="flex items-center space-x-1 text-xs font-bold text-white bg-orange-500/70 backdrop-blur-md px-2 py-0.5 rounded-full shadow-lg">
+                                  <WifiOff className="w-3 h-3" />
+                                  <span className="hidden sm:inline">Offline</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right: Actions */}
+                        <div className="flex items-center space-x-1 md:space-x-2">
+                          {/* Refresh Button - Always visible */}
+                          <button
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            className="p-2 md:p-3 hover:bg-white/20 rounded-xl transition-colors disabled:opacity-50 backdrop-blur-sm"
+                            aria-label="Refresh weather data"
+                          >
+                            <RefreshCw className={`w-5 h-5 md:w-6 md:h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] ${isRefreshing ? 'animate-spin' : ''}`} />
+                          </button>
+
+                          {/* Desktop-only buttons */}
+                          <div className="hidden md:flex items-center space-x-2">
+                            <button
+                              onClick={() => setShowComparison(!showComparison)}
+                              className="p-3 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                              aria-label="Compare locations"
+                              title="Compare Locations"
+                            >
+                              <TrendingUp className={`w-6 h-6 ${showComparison ? 'text-yellow-300' : 'text-white'} drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]`} />
+                            </button>
+                            <button
+                              onClick={toggleTheme}
+                              className="p-3 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                              aria-label="Toggle theme"
+                              title={`Theme: ${theme}`}
+                            >
+                              {effectiveTheme === 'dark' ? (
+                                <Moon className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                              ) : (
+                                <Sun className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                              )}
+                            </button>
+                            <button
+                              onClick={() => setShowSavedLocations(!showSavedLocations)}
+                              className="p-3 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                              aria-label="Open saved locations"
+                              title="Saved Locations"
+                            >
+                              <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-300 text-yellow-300' : 'text-white'} drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]`} />
+                            </button>
+                            <ShareWeather
+                              weather={weatherData.current}
+                              location={currentLocation!}
+                              temperatureUnit={temperatureUnit}
+                            />
+                            <button
+                              onClick={() => setShowSettings(!showSettings)}
+                              className="p-3 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                              aria-label="Open settings"
+                              title="Settings"
+                            >
+                              <SettingsIcon className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </header>
+
+                  {/* Weather content */}
+                  <CurrentWeatherCard
+                    weather={weatherData.current}
+                    locationName={currentLocation?.name || 'Unknown Location'}
+                    humidity={weatherData.hourly.relative_humidity_2m[0]}
+                    temperatureUnit={temperatureUnit}
+                    windSpeedUnit={windSpeedUnit}
+                    onLocationSelect={handleLocationSelect}
+                    onUseCurrentLocation={useCurrentLocation}
+                    isLoadingLocation={loading && !weatherData}
+                  />
+                </div>
+              </div>
             )}
 
             {/* Contained Content */}
