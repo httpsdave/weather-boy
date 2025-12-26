@@ -56,7 +56,7 @@ const TemperatureChart: React.FC<TemperatureChartProps> = ({ daily, temperatureU
               <div key={index} className="flex-1 flex flex-col items-center justify-end gap-1 h-full relative">
                 {/* Bar */}
                 <div 
-                  className="relative w-full cursor-pointer transition-opacity hover:opacity-80 flex items-start justify-center pt-2"
+                  className="relative w-full cursor-pointer transition-opacity hover:opacity-80 flex items-center justify-center"
                   style={{ height: `${Math.max(heightPercent, 10)}%` }}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
