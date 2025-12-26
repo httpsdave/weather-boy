@@ -34,11 +34,11 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/50 z-50 animate-fade-in"
+        className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-150"
         onClick={onClose}
         aria-label="Close saved locations"
       />
-      <div className="fixed left-2 md:left-4 top-16 md:top-20 bg-white rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm max-h-[80vh] overflow-y-auto animate-slide-up">{" "}
+      <div className="fixed left-2 md:left-4 top-16 md:top-20 bg-white rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm max-h-[80vh] overflow-y-auto transition-all duration-150">{" "}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <Star className="w-5 h-5 text-weather-blue" />

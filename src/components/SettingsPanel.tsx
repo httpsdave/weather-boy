@@ -28,11 +28,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/50 z-50 animate-fade-in"
+        className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-150"
         onClick={onClose}
         aria-label="Close settings"
       />
-      <div className="fixed right-2 md:right-4 top-16 md:top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm animate-slide-up">
+      <div className="fixed right-2 md:right-4 top-16 md:top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm transition-all duration-150">
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <div className="flex items-center space-x-2">
             <Settings className="w-4 h-4 md:w-5 md:h-5 text-weather-blue" />

@@ -53,10 +53,10 @@ const ComparisonWidget: React.FC<ComparisonWidgetProps> = ({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/50 z-50 animate-fade-in"
+        className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-150"
         onClick={onClose}
       />
-      <div className="fixed inset-x-2 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-auto md:w-[800px] max-h-[80vh] overflow-y-auto animate-slide-up">
+      <div className="fixed inset-x-2 md:inset-x-auto md:left-1/2 md:-translate-x-1/2 top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-auto md:w-[800px] max-h-[80vh] overflow-y-auto transition-all duration-150">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <TrendingUp className="w-5 h-5 text-weather-blue" />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Star, Settings as SettingsIcon, TrendingUp, Sun, Moon, Share2 } from 'lucide-react';
 
 interface MobileSidebarProps {
@@ -22,7 +22,24 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
   onShare,
   effectiveTheme,
 }) => {
-  if (!isOpen) return null;
+  const [isClosing, setIsClosing] = useState(false);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
+    } else if (shouldRender) {
+      setIsClosing(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsClosing(false);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, shouldRender]);
+
+  if (!shouldRender) return null;
 
   const menuItems = [
     {
@@ -70,12 +87,16 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 animate-fade-in"
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity duration-200 ${
+          isClosing ? 'opacity-0' : 'opacity-100'
+        }`}
         onClick={onClose}
       />
 
       {/* Sidebar */}
-      <div className="fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-800 z-50 shadow-2xl animate-slide-in-left">
+      <div className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-800 z-50 shadow-2xl transition-transform duration-200 ${
+        isClosing ? '-translate-x-full' : 'translate-x-0'
+      }`}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Menu</h2>

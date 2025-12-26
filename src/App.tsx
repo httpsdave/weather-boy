@@ -201,6 +201,7 @@ function App() {
                       onClick={() => setShowComparison(!showComparison)}
                       className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
                       aria-label="Compare locations"
+                      title="Compare Locations"
                     >
                       <TrendingUp className={`w-6 h-6 ${showComparison ? 'text-blue-600' : 'text-gray-600 dark:text-gray-300'}`} />
                     </button>
@@ -220,6 +221,7 @@ function App() {
                       onClick={() => setShowSavedLocations(!showSavedLocations)}
                       className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
                       aria-label="Open saved locations"
+                      title="Saved Locations"
                     >
                       <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600 dark:text-gray-300'}`} />
                     </button>
@@ -234,6 +236,7 @@ function App() {
                       onClick={() => setShowSettings(!showSettings)}
                       className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
                       aria-label="Open settings"
+                      title="Settings"
                     >
                       <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
                     </button>
