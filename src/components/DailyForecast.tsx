@@ -17,16 +17,25 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatur
 
   const getHourlyForDay = (dayIndex: number) => {
     if (!hourly) return [];
-    const dayStart = dayIndex * 24;
-    return Array.from({ length: 8 }, (_, i) => {
-      const index = dayStart + i * 3; // Every 3 hours
-      if (index >= hourly.time.length) return null;
-      return {
-        time: hourly.time[index],
-        temp: storageService.convertTemperature(hourly.temperature_2m[index], temperatureUnit),
-        code: hourly.weather_code[index],
-      };
-    }).filter(Boolean);
+    const targetDate = format(parseISO(daily.time[dayIndex]), 'yyyy-MM-dd');
+
+    const entriesForDay = [] as {
+      time: string;
+      temp: number;
+      code: number;
+    }[];
+
+    for (let i = 0; i < hourly.time.length; i++) {
+      if (!hourly.time[i].startsWith(targetDate)) continue;
+
+      entriesForDay.push({
+        time: hourly.time[i],
+        temp: storageService.convertTemperature(hourly.temperature_2m[i], temperatureUnit),
+        code: hourly.weather_code[i],
+      });
+    }
+
+    return entriesForDay.filter((_, index) => index % 3 === 0).slice(0, 8);
   };
 
   return (

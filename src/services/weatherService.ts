@@ -14,7 +14,7 @@ export const weatherService = {
       daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,sunrise,sunset,uv_index_max,wind_gusts_10m_max',
       timezone: 'auto',
       forecast_days: '7',
-      forecast_hours: '48',
+      forecast_hours: '168',
     });
 
     const response = await fetch(`${BASE_URL}/forecast?${params}`);
