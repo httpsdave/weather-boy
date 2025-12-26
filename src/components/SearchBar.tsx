@@ -98,33 +98,33 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div className="relative w-full max-w-2xl mx-auto animate-fade-in z-50">
-      <div className="flex space-x-2">
+      <div className="flex space-x-3">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4 drop-shadow-md" />
           <input
             type="text"
             value={query}
             onChange={(e) => debouncedSearch(e.target.value)}
             placeholder="Search for a city..."
-            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/20 backdrop-blur-md border-2 border-white/30 focus:border-white/50 focus:bg-white/25 focus:outline-none text-white placeholder-white/60 text-lg transition-all"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-md border border-white/40 focus:border-white/60 focus:bg-white/35 focus:outline-none text-white placeholder-white/70 text-base transition-all shadow-lg"
             aria-label="Search for a city"
           />
           {isSearching && (
-            <Loader className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5 animate-spin" />
+            <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4 animate-spin drop-shadow-md" />
           )}
         </div>
         
         <button
           onClick={onUseCurrentLocation}
           disabled={isLoadingLocation}
-          className="bg-white/25 hover:bg-white/35 backdrop-blur-md text-white border-2 border-white/30 px-6 py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          className="bg-red-500 hover:bg-red-600 backdrop-blur-md text-white border border-red-400 px-4 py-2.5 rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 shadow-lg"
         >
           {isLoadingLocation ? (
-            <Loader className="w-5 h-5 animate-spin" />
+            <Loader className="w-4 h-4 animate-spin" />
           ) : (
-            <MapPin className="w-5 h-5" />
+            <MapPin className="w-4 h-4" />
           )}
-          <span className="hidden md:inline">Location</span>
+          <span className="hidden md:inline text-sm">Location</span>
         </button>
       </div>
 
