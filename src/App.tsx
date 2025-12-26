@@ -1,4 +1,3 @@
-import React from 'react';
 import { Cloud } from 'lucide-react';
 import { useWeather } from './hooks/useWeather';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
@@ -60,7 +59,6 @@ function App() {
 
             <HourlyForecast
               hourly={weatherData.hourly}
-              timezone={weatherData.timezone}
             />
 
             <DailyForecast daily={weatherData.daily} />

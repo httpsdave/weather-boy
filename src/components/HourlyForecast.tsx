@@ -5,10 +5,9 @@ import { weatherService } from '../services/weatherService';
 
 interface HourlyForecastProps {
   hourly: HourlyWeather;
-  timezone: string;
 }
 
-const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, timezone }) => {
+const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly }) => {
   const next24Hours = hourly.time.slice(0, 24);
 
   return (

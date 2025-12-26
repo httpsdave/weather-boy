@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cloud, Wind, Droplets, Eye } from 'lucide-react';
+import { Wind, Droplets } from 'lucide-react';
 import { CurrentWeather } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 
