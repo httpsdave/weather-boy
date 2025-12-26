@@ -16,18 +16,18 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
   const displayHours = showExtended ? next48Hours : hourly.time.slice(0, 24);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white">Hourly Forecast</h3>
+    <div className="bg-white dark:bg-gray-800 rounded-[28px] p-6 md:p-8 shadow-card hover:shadow-card-hover transition-shadow duration-300 animate-slide-up">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Hourly Forecast</h3>
         <button
           onClick={() => setShowExtended(!showExtended)}
-          className="text-xs md:text-sm text-weather-blue hover:text-blue-600 font-medium"
+          className="px-4 py-2 text-sm bg-gradient-to-r from-weather-blue to-sky-vibrant text-white rounded-full hover:shadow-lg transition-all duration-200 font-semibold active:scale-95"
         >
-          {showExtended ? 'Show 24h' : 'Show 48h'}
+          {showExtended ? '24h' : '48h'}
         </button>
       </div>
-      <div className="overflow-x-auto pb-2 -mx-4 md:mx-0 px-4 md:px-0">
-        <div className="flex space-x-3 md:space-x-4 min-w-max">{displayHours.map((time, index) => {
+      <div className="overflow-x-auto pb-3 -mx-6 md:mx-0 px-6 md:px-0">
+        <div className="flex space-x-4 min-w-max">{displayHours.map((time, index) => {
             const weatherInfo = weatherService.getWeatherDescription(
               hourly.weather_code[index],
               true
@@ -43,37 +43,38 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
             return (
               <div
                 key={time}
-                className="flex flex-col items-center bg-gray-50 dark:bg-gray-700 rounded-2xl p-3 md:p-4 min-w-[90px] md:min-w-[100px] hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors active:scale-95"
+                className="flex flex-col items-center bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-4 min-w-[110px] shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200 cursor-pointer animate-card-pop"
+                style={{ animationDelay: `${index * 0.03}s` }}
               >
-                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
+                <p className="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3">
                   {format(parseISO(time), 'HH:mm')}
                 </p>
-                <div className="text-2xl md:text-3xl my-2">{weatherInfo.icon}</div>
-                <p className="text-base md:text-lg font-bold text-gray-800 dark:text-white">
+                <div className="text-3xl my-3">{weatherInfo.icon}</div>
+                <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-cyan-400">
                   {Math.round(temp)}°
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
                   Feels {Math.round(feelsLike)}°
                 </p>
                 {precipAmount > 0 && (
-                  <div className="text-xs text-blue-600 mt-1 font-medium">
+                  <div className="text-xs text-blue-600 dark:text-blue-400 mt-2 font-semibold bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded-lg">
                     💧 {precipAmount.toFixed(1)}mm
                   </div>
                 )}
                 {precipProb > 0 && precipAmount === 0 && (
-                  <div className="text-xs text-blue-500 mt-1">
+                  <div className="text-xs text-blue-500 dark:text-blue-400 mt-2">
                     💧 {Math.round(precipProb)}%
                   </div>
                 )}
-                <div className="flex flex-col items-center text-xs text-gray-500 dark:text-gray-400 mt-2 space-y-1">
-                  <span>💨 {Math.round(windSpeed)}</span>
+                <div className="flex flex-col items-center text-xs text-gray-600 dark:text-gray-400 mt-2 space-y-1">
+                  <span className="font-medium">💨 {Math.round(windSpeed)}</span>
                   {windGust > windSpeed + 5 && (
-                    <span className="text-orange-600 font-medium">
+                    <span className="text-orange-600 dark:text-orange-400 font-semibold bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded">
                       ⚠️ {Math.round(windGust)}
                     </span>
                   )}
                   {visibility < 10 && (
-                    <span className="text-gray-600 dark:text-gray-300">
+                    <span className="text-gray-700 dark:text-gray-300 font-medium">
                       👁️ {visibility.toFixed(1)}km
                     </span>
                   )}

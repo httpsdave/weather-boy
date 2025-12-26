@@ -130,23 +130,25 @@ function App() {
   return (
     <ErrorBoundary>
       <PullToRefresh onRefresh={handleRefresh}>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
+        <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-all duration-500">
           {/* Header */}
-          <header className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
-            <div className="container mx-auto px-4 py-4">
+          <header className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl shadow-lg sticky top-0 z-40 border-b border-blue-100 dark:border-gray-700">
+            <div className="container mx-auto px-4 py-5">
               <div className="flex items-center justify-between max-w-7xl mx-auto">
                 <div className="flex items-center space-x-3">
-                  <Cloud className="w-8 h-8 text-weather-blue" />
+                  <div className="bg-gradient-to-br from-weather-blue to-sky-vibrant p-2 rounded-2xl shadow-lg">
+                    <Cloud className="w-8 h-8 text-white" />
+                  </div>
                   <div>
-                    <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-weather-blue to-blue-600 bg-clip-text text-transparent">
+                    <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-weather-blue via-blue-500 to-sky-vibrant bg-clip-text text-transparent">
                       Weather Boy
                     </h1>
                     <div className="flex items-center space-x-2">
-                      <p className="text-xs text-gray-600 dark:text-gray-400 hidden md:block">
-                        Your friendly weather companion
+                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 hidden md:block">
+                        Your friendly weather companion ☀️
                       </p>
                       {!isOnline && (
-                        <div className="flex items-center space-x-1 text-xs text-orange-600 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded">
+                        <div className="flex items-center space-x-1 text-xs font-bold text-orange-600 bg-orange-100 dark:bg-orange-900/40 px-2 py-1 rounded-full shadow-sm">
                           <WifiOff className="w-3 h-3" />
                           <span>Offline</span>
                         </div>
@@ -157,26 +159,26 @@ function App() {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setShowComparison(!showComparison)}
-                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    className="p-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:bg-gray-700 rounded-2xl transition-all duration-200 shadow-sm hover:shadow-md"
                     aria-label="Compare locations"
                   >
                     <TrendingUp className={`w-6 h-6 ${showComparison ? 'text-weather-blue' : 'text-gray-600 dark:text-gray-300'}`} />
                   </button>
                   <button
                     onClick={toggleTheme}
-                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    className="p-3 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-600 hover:shadow-lg rounded-2xl transition-all duration-200 shadow-sm"
                     aria-label="Toggle theme"
                     title={`Theme: ${theme}`}
                   >
                     {effectiveTheme === 'dark' ? (
-                      <Moon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                      <Moon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     ) : (
-                      <Sun className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                      <Sun className="w-6 h-6 text-orange-500" />
                     )}
                   </button>
                   <button
                     onClick={() => setShowSavedLocations(!showSavedLocations)}
-                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    className="p-3 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 dark:hover:bg-gray-700 rounded-2xl transition-all duration-200 shadow-sm hover:shadow-md"
                     aria-label="Open saved locations"
                   >
                     <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600 dark:text-gray-300'}`} />
@@ -192,18 +194,18 @@ function App() {
                     <button
                       onClick={handleRefresh}
                       disabled={isRefreshing}
-                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50"
+                      className="p-3 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-700 dark:to-gray-600 hover:shadow-lg rounded-2xl transition-all duration-200 disabled:opacity-50 shadow-sm"
                       aria-label="Refresh weather data"
                     >
-                      <RefreshCw className={`w-6 h-6 text-gray-600 dark:text-gray-300 ${isRefreshing ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-6 h-6 text-green-600 dark:text-green-400 ${isRefreshing ? 'animate-spin' : ''}`} />
                     </button>
                   )}
                   <button
                     onClick={() => setShowSettings(!showSettings)}
-                    className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+                    className="p-3 bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 hover:shadow-lg rounded-2xl transition-all duration-200 shadow-sm"
                     aria-label="Open settings"
                   >
-                    <SettingsIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                    <SettingsIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </button>
                 </div>
               </div>

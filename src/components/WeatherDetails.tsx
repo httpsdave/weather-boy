@@ -95,22 +95,25 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
-      <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-4">Weather Details</h3>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+    <div className="bg-white dark:bg-gray-800 rounded-[28px] p-6 md:p-8 shadow-card hover:shadow-card-hover transition-shadow duration-300 animate-slide-up">
+      <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6">Weather Details</h3>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {details.map((detail, index) => (
           <div
             key={index}
-            className={`bg-gray-50 dark:bg-gray-700 rounded-xl md:rounded-2xl p-3 md:p-4 hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors active:scale-95 ${
-              detail.highlight ? 'ring-2 ring-orange-400' : ''
+            className={`bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-700 dark:to-gray-600 rounded-2xl p-4 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 animate-card-pop ${
+              detail.highlight ? 'ring-2 ring-orange-400 shadow-lg' : ''
             }`}
+            style={{ animationDelay: `${index * 0.03}s` }}
           >
-            <div className="flex items-center space-x-1 md:space-x-2 text-weather-blue mb-1 md:mb-2">
-              {detail.icon}
-              <span className="text-xs font-medium text-gray-600 dark:text-gray-300">{detail.label}</span>
+            <div className="flex items-center space-x-2 mb-3">
+              <div className="bg-blue-500/20 dark:bg-blue-400/20 p-2 rounded-xl text-blue-600 dark:text-blue-400">
+                {detail.icon}
+              </div>
+              <span className="text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wide">{detail.label}</span>
             </div>
-            <p className={`text-base md:text-lg font-bold break-words ${
-              detail.highlight ? 'text-orange-600' : 'text-gray-800 dark:text-white'
+            <p className={`text-lg md:text-xl font-bold break-words ${
+              detail.highlight ? 'text-orange-600 dark:text-orange-400' : 'text-gray-900 dark:text-white'
             }`}>{detail.value}</p>
           </div>
         ))}
