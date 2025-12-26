@@ -310,10 +310,10 @@ function App() {
                   windSpeedUnit={windSpeedUnit}
                 />
 
-                <TemperatureChart
+                <HourlyForecast
                   hourly={weatherData.hourly}
                   temperatureUnit={temperatureUnit}
-                  hours={24}
+                  windSpeedUnit={windSpeedUnit}
                 />
 
                 {currentLocation && (
@@ -323,16 +323,16 @@ function App() {
                   />
                 )}
 
-                <HourlyForecast
-                  hourly={weatherData.hourly}
-                  temperatureUnit={temperatureUnit}
-                  windSpeedUnit={windSpeedUnit}
-                />
-
                 <DailyForecast
                   daily={weatherData.daily}
                   hourly={weatherData.hourly}
                   temperatureUnit={temperatureUnit}
+                />
+
+                <TemperatureChart
+                  hourly={weatherData.hourly}
+                  temperatureUnit={temperatureUnit}
+                  hours={24}
                 />
               </div>
             )}
