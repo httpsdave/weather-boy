@@ -1,92 +1,90 @@
-import React from 'react';
-import { HourlyWeather } from '../types/weather';
+import React, { useState } from 'react';
+import { DailyWeather } from '../types/weather';
 import { storageService, TemperatureUnit } from '../services/storageService';
 import { format, parseISO } from 'date-fns';
 
 interface TemperatureChartProps {
-  hourly: HourlyWeather;
+  daily: DailyWeather;
   temperatureUnit: TemperatureUnit;
-  hours?: number;
 }
 
-const TemperatureChart: React.FC<TemperatureChartProps> = ({ hourly, temperatureUnit, hours = 24 }) => {
-  const data = hourly.time.slice(0, hours).map((time, index) => ({
-    time,
-    temp: storageService.convertTemperature(hourly.temperature_2m[index], temperatureUnit),
-  }));
+const TemperatureChart: React.FC<TemperatureChartProps> = ({ daily, temperatureUnit }) => {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const maxTemp = Math.max(...data.map(d => d.temp));
-  const minTemp = Math.min(...data.map(d => d.temp));
-  const range = maxTemp - minTemp || 1;
+  // Use daily temperature data from Open-Meteo (up to 16 days available)
+  const dailyData = daily.time.slice(0, 7).map((time, index) => {
+    const high = Math.round(storageService.convertTemperature(daily.temperature_2m_max[index], temperatureUnit));
+    const low = Math.round(storageService.convertTemperature(daily.temperature_2m_min[index], temperatureUnit));
+    const date = parseISO(time);
+    
+    return {
+      day: format(date, 'EEE'),
+      date: format(date, 'MMM d'),
+      high,
+      low,
+      range: high - low,
+    };
+  });
+
+  // Find min and max for scaling
+  const allTemps = dailyData.flatMap(d => [d.high, d.low]);
+  const minTemp = Math.min(...allTemps);
+  const maxTemp = Math.max(...allTemps);
+  const tempRange = maxTemp - minTemp || 1;
+
+  // Color bars based on temperature
+  const getColor = (temp: number) => {
+    if (temp >= 30) return 'bg-red-500';
+    if (temp >= 25) return 'bg-orange-500';
+    if (temp >= 20) return 'bg-amber-500';
+    if (temp >= 15) return 'bg-yellow-500';
+    if (temp >= 10) return 'bg-lime-500';
+    if (temp >= 5) return 'bg-green-500';
+    return 'bg-blue-500';
+  };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 shadow-xl">
-      <h3 className="text-lg md:text-xl font-bold text-gray-800 dark:text-white mb-4">Temperature Trend</h3>
-      <div className="relative h-48 md:h-64">
-        <svg className="w-full h-full" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="tempGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgb(59, 130, 246)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="rgb(59, 130, 246)" stopOpacity="0.05" />
-            </linearGradient>
-          </defs>
-          
-          {/* Grid lines */}
-          {[0, 25, 50, 75, 100].map((percent) => (
-            <line
-              key={percent}
-              x1="0"
-              y1={`${percent}%`}
-              x2="100%"
-              y2={`${percent}%`}
-              stroke="currentColor"
-              strokeWidth="1"
-              className="text-gray-200 dark:text-gray-700"
-            />
-          ))}
-
-          {/* Temperature line */}
-          <polyline
-            points={data.map((d, i) => {
-              const x = (i / (data.length - 1)) * 100;
-              const y = 100 - ((d.temp - minTemp) / range) * 100;
-              return `${x},${y}`;
-            }).join(' ')}
-            fill="url(#tempGradient)"
-            stroke="rgb(59, 130, 246)"
-            strokeWidth="2"
-            vectorEffect="non-scaling-stroke"
-          />
-
-          {/* Data points */}
-          {data.map((d, i) => {
-            const x = (i / (data.length - 1)) * 100;
-            const y = 100 - ((d.temp - minTemp) / range) * 100;
+    <div className="animate-slide-up">
+      <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6">7-Day Temperature Trend</h3>
+      <div className="relative">
+        {/* Chart container */}
+        <div className="flex items-end justify-between gap-2 px-2" style={{ height: '240px' }}>
+          {dailyData.map((data, index) => {
+            const heightPercent = ((data.high - minTemp) / tempRange) * 100;
+            
             return (
-              <circle
-                key={i}
-                cx={`${x}%`}
-                cy={`${y}%`}
-                r="3"
-                fill="rgb(59, 130, 246)"
-                className="hover:r-5"
-              />
+              <div key={index} className="flex-1 flex flex-col items-center justify-end gap-1 h-full relative">
+                {/* Bar */}
+                <div 
+                  className="relative w-full cursor-pointer transition-opacity hover:opacity-80 flex items-start justify-center pt-2"
+                  style={{ height: `${Math.max(heightPercent, 10)}%` }}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  <div className={`absolute inset-0 w-full h-full ${getColor(data.high)}`}></div>
+                  
+                  {/* Temperature label inside bar */}
+                  <div className="relative z-10 text-xl md:text-2xl font-bold text-white drop-shadow-md">
+                    {data.high}°
+                  </div>
+                  
+                  {/* Tooltip */}
+                  {hoveredIndex === index && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-800 p-3 shadow-lg border border-gray-200 dark:border-gray-600 whitespace-nowrap z-20">
+                      <p className="font-bold text-gray-900 dark:text-white text-sm">{data.day}, {data.date}</p>
+                      <p className="text-xs text-orange-600 dark:text-orange-400">High: {data.high}°</p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">Low: {data.low}°</p>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Day label */}
+                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300 pt-2 pb-1">
+                  {data.day}
+                </div>
+              </div>
             );
           })}
-        </svg>
-
-        {/* X-axis labels */}
-        <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2">
-          {[0, Math.floor(data.length / 2), data.length - 1].map((i) => (
-            <span key={i}>{format(parseISO(data[i].time), 'HH:mm')}</span>
-          ))}
-        </div>
-
-        {/* Y-axis labels */}
-        <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 -ml-10">
-          <span>{Math.round(maxTemp)}°</span>
-          <span>{Math.round((maxTemp + minTemp) / 2)}°</span>
-          <span>{Math.round(minTemp)}°</span>
         </div>
       </div>
     </div>

@@ -330,9 +330,8 @@ function App() {
                 />
 
                 <TemperatureChart
-                  hourly={weatherData.hourly}
+                  daily={weatherData.daily}
                   temperatureUnit={temperatureUnit}
-                  hours={24}
                 />
               </div>
             )}
