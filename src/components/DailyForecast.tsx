@@ -38,9 +38,19 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, temperatureUnit })
               </div>
               
               <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
-                {daily.precipitation_probability_max[index] > 0 && (
+                {daily.precipitation_sum[index] > 0 && (
+                  <div className="hidden sm:flex items-center text-blue-600 text-xs md:text-sm font-medium">
+                    <span>💧 {daily.precipitation_sum[index].toFixed(1)}mm</span>
+                  </div>
+                )}
+                {daily.precipitation_probability_max[index] > 0 && daily.precipitation_sum[index] === 0 && (
                   <div className="hidden sm:flex items-center text-blue-500 text-xs md:text-sm">
                     <span>💧 {Math.round(daily.precipitation_probability_max[index])}%</span>
+                  </div>
+                )}
+                {daily.wind_gusts_10m_max[index] > 40 && (
+                  <div className="hidden md:flex items-center text-orange-600 text-xs md:text-sm">
+                    <span>💨 {Math.round(daily.wind_gusts_10m_max[index])}</span>
                   </div>
                 )}
                 {daily.uv_index_max[index] > 6 && (

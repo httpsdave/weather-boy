@@ -16,7 +16,14 @@ export const useWeather = () => {
       const data = await weatherService.getCurrentWeather(latitude, longitude);
       setWeatherData(data);
     } catch (err) {
-      setError('Failed to fetch weather data. Please try again.');
+      // Try to load cached data if online fetch fails
+      const cached = weatherService.getCachedWeather();
+      if (cached && cached.location.latitude === latitude && cached.location.longitude === longitude) {
+        setWeatherData(cached.data);
+        setError('Showing cached data. Unable to fetch latest updates.');
+      } else {
+        setError('Failed to fetch weather data. Please try again.');
+      }
       console.error('Weather fetch error:', err);
     } finally {
       setLoading(false);

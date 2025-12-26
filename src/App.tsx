@@ -1,5 +1,5 @@
-import { Cloud, Settings as SettingsIcon, Star, RefreshCw } from 'lucide-react';
-import { useState } from 'react';
+import { Cloud, Settings as SettingsIcon, Star, RefreshCw, WifiOff } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useWeather } from './hooks/useWeather';
 import { storageService, TemperatureUnit, WindSpeedUnit } from './services/storageService';
 import CurrentWeatherCard from './components/CurrentWeatherCard';
@@ -13,6 +13,8 @@ import WeatherDetails from './components/WeatherDetails';
 import WeatherSkeleton from './components/WeatherSkeleton';
 import SavedLocations from './components/SavedLocations';
 import AirQualityCard from './components/AirQualityCard';
+import ShareWeather from './components/ShareWeather';
+import { weatherService } from './services/weatherService';
 
 function App() {
   const {
@@ -34,6 +36,33 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showSavedLocations, setShowSavedLocations] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [lastUpdated, setLastUpdated] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    
+    // Check for cached data timestamp
+    const cached = weatherService.getCachedWeather();
+    if (cached) {
+      setLastUpdated(cached.timestamp);
+    }
+    
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (weatherData) {
+      setLastUpdated(Date.now());
+    }
+  }, [weatherData]);
 
   const handleTemperatureUnitChange = (unit: TemperatureUnit) => {
     setTemperatureUnit(unit);
@@ -49,8 +78,20 @@ function App() {
     if (currentLocation && !isRefreshing) {
       setIsRefreshing(true);
       await handleLocationSelect(currentLocation);
+      setLastUpdated(Date.now());
       setTimeout(() => setIsRefreshing(false), 1000);
     }
+  };
+
+  const getTimeSinceUpdate = () => {
+    if (!lastUpdated) return '';
+    const minutes = Math.floor((Date.now() - lastUpdated) / 60000);
+    if (minutes < 1) return 'Just now';
+    if (minutes === 1) return '1 min ago';
+    if (minutes < 60) return `${minutes} mins ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours === 1) return '1 hour ago';
+    return `${hours} hours ago`;
   };
 
   return (
@@ -66,9 +107,17 @@ function App() {
                   <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-weather-blue to-blue-600 bg-clip-text text-transparent">
                     Weather Boy
                   </h1>
-                  <p className="text-xs text-gray-600 hidden md:block">
-                    Your friendly weather companion
-                  </p>
+                  <div className="flex items-center space-x-2">
+                    <p className="text-xs text-gray-600 hidden md:block">
+                      Your friendly weather companion
+                    </p>
+                    {!isOnline && (
+                      <div className="flex items-center space-x-1 text-xs text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                        <WifiOff className="w-3 h-3" />
+                        <span>Offline</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -79,6 +128,13 @@ function App() {
                 >
                   <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600'}`} />
                 </button>
+                {weatherData && currentLocation && (
+                  <ShareWeather
+                    weather={weatherData.current}
+                    location={currentLocation}
+                    temperatureUnit={temperatureUnit}
+                  />
+                )}
                 {weatherData && (
                   <button
                     onClick={handleRefresh}
@@ -125,6 +181,12 @@ function App() {
             isLoadingLocation={loading && !weatherData}
           />
 
+          {lastUpdated && weatherData && (
+            <div className="text-center text-sm text-gray-500 mb-4">
+              Updated {getTimeSinceUpdate()}
+            </div>
+          )}
+
           {loading && !weatherData && <WeatherSkeleton />}
 
           {error && !weatherData && (
@@ -141,23 +203,21 @@ function App() {
                 windSpeedUnit={windSpeedUnit}
               />
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <WeatherDetails
-                  weather={weatherData.current}
-                  sunrise={weatherData.daily.sunrise[0]}
-                  sunset={weatherData.daily.sunset[0]}
-                  humidity={weatherData.hourly.relative_humidity_2m[0]}
-                  temperatureUnit={temperatureUnit}
-                  windSpeedUnit={windSpeedUnit}
-                />
+              <WeatherDetails
+                weather={weatherData.current}
+                sunrise={weatherData.daily.sunrise[0]}
+                sunset={weatherData.daily.sunset[0]}
+                humidity={weatherData.hourly.relative_humidity_2m[0]}
+                temperatureUnit={temperatureUnit}
+                windSpeedUnit={windSpeedUnit}
+              />
 
-                {currentLocation && (
-                  <AirQualityCard
-                    latitude={currentLocation.latitude}
-                    longitude={currentLocation.longitude}
-                  />
-                )}
-              </div>
+              {currentLocation && (
+                <AirQualityCard
+                  latitude={currentLocation.latitude}
+                  longitude={currentLocation.longitude}
+                />
+              )}
 
               <HourlyForecast
                 hourly={weatherData.hourly}

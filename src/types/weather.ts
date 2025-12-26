@@ -9,15 +9,25 @@ export interface CurrentWeather {
   uv_index: number;
   pressure_msl: number;
   precipitation: number;
+  wind_gusts_10m: number;
+  visibility: number;
+  cloud_cover: number;
+  dew_point_2m: number;
 }
 
 export interface HourlyWeather {
   time: string[];
   temperature_2m: number[];
+  apparent_temperature: number[];
   relative_humidity_2m: number[];
   wind_speed_10m: number[];
+  wind_gusts_10m: number[];
   weather_code: number[];
   precipitation_probability: number[];
+  precipitation: number[];
+  cloud_cover: number[];
+  visibility: number[];
+  dew_point_2m: number[];
 }
 
 export interface DailyWeather {
@@ -26,9 +36,11 @@ export interface DailyWeather {
   temperature_2m_max: number[];
   temperature_2m_min: number[];
   precipitation_probability_max: number[];
+  precipitation_sum: number[];
   sunrise: string[];
   sunset: string[];
   uv_index_max: number[];
+  wind_gusts_10m_max: number[];
 }
 
 export interface WeatherData {

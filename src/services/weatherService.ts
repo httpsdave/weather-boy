@@ -9,11 +9,12 @@ export const weatherService = {
     const params = new URLSearchParams({
       latitude: latitude.toString(),
       longitude: longitude.toString(),
-      current: 'temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,is_day,uv_index,pressure_msl,precipitation',
-      hourly: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,precipitation_probability',
-      daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max',
+      current: 'temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,is_day,uv_index,pressure_msl,precipitation,wind_gusts_10m,visibility,cloud_cover,dew_point_2m',
+      hourly: 'temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,weather_code,precipitation_probability,precipitation,cloud_cover,visibility,dew_point_2m',
+      daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,sunrise,sunset,uv_index_max,wind_gusts_10m_max',
       timezone: 'auto',
       forecast_days: '7',
+      forecast_hours: '48',
     });
 
     const response = await fetch(`${BASE_URL}/forecast?${params}`);
@@ -21,7 +22,32 @@ export const weatherService = {
       throw new Error('Failed to fetch weather data');
     }
 
-    return response.json();
+    const data = await response.json();
+    
+    // Cache the data for offline use
+    try {
+      localStorage.setItem('weatherboy_cached_data', JSON.stringify({
+        data,
+        timestamp: Date.now(),
+        location: { latitude, longitude }
+      }));
+    } catch (e) {
+      console.warn('Failed to cache weather data:', e);
+    }
+
+    return data;
+  },
+
+  getCachedWeather(): { data: WeatherData; timestamp: number; location: { latitude: number; longitude: number } } | null {
+    try {
+      const cached = localStorage.getItem('weatherboy_cached_data');
+      if (cached) {
+        return JSON.parse(cached);
+      }
+    } catch (e) {
+      console.warn('Failed to retrieve cached data:', e);
+    }
+    return null;
   },
 
   async searchLocation(query: string): Promise<GeocodingResult> {
