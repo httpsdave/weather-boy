@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format, parseISO } from 'date-fns';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Droplets, Wind, Sun } from 'lucide-react';
 import { DailyWeather, HourlyWeather } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 import { storageService, TemperatureUnit } from '../services/storageService';
@@ -45,7 +45,7 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatur
           const WeatherBackground = getWeatherBackground(daily.weather_code[index], true);
           
           return (
-            <div key={date} className="relative overflow-visible shadow-sm border border-gray-200 dark:border-gray-600 animate-card-pop" style={{ animationDelay: `${index * 0.05}s` }}>
+            <div key={date} className="relative shadow-sm border border-gray-200 dark:border-gray-600 animate-card-pop" style={{ animationDelay: `${index * 0.05}s` }}>
               {/* Weather Background Illustration */}
               <div className="absolute inset-0 z-0 overflow-hidden">
                 <div className="relative w-full h-full">
@@ -71,32 +71,42 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatur
                 
                 <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
                   {daily.precipitation_sum[index] > 0 && (
-                    <div className="hidden sm:flex items-center text-blue-600 dark:text-blue-400 text-xs md:text-sm font-bold bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded-lg">
-                      <span>💧 {daily.precipitation_sum[index].toFixed(1)}mm</span>
+                    <div className="flex items-center space-x-1 text-blue-600 dark:text-blue-400 text-xs font-bold">
+                      <Droplets className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="whitespace-nowrap">{daily.precipitation_sum[index].toFixed(1)}mm</span>
                     </div>
                   )}
                   {daily.precipitation_probability_max[index] > 0 && daily.precipitation_sum[index] === 0 && (
-                    <div className="hidden sm:flex items-center text-blue-500 text-xs md:text-sm">
-                      <span>💧 {Math.round(daily.precipitation_probability_max[index])}%</span>
+                    <div className="flex items-center space-x-1 text-blue-500 dark:text-blue-400 text-xs">
+                      <Droplets className="w-3 h-3 md:w-4 md:h-4" />
+                      <span className="whitespace-nowrap">{Math.round(daily.precipitation_probability_max[index])}%</span>
                     </div>
                   )}
                   {daily.wind_gusts_10m_max[index] > 40 && (
-                    <div className="hidden md:flex items-center text-orange-600 text-xs md:text-sm">
-                      <span>💨 {Math.round(daily.wind_gusts_10m_max[index])}</span>
+                    <div className="hidden md:flex items-center space-x-1 text-orange-600 dark:text-orange-400 text-xs md:text-sm font-semibold">
+                      <Wind className="w-4 h-4" />
+                      <span>{Math.round(daily.wind_gusts_10m_max[index])} gusts</span>
                     </div>
                   )}
                   {daily.uv_index_max[index] > 6 && (
-                    <div className="hidden md:flex items-center text-orange-500 text-xs md:text-sm">
-                      <span>☀️ {Math.round(daily.uv_index_max[index])}</span>
+                    <div className="hidden md:flex items-center space-x-1 text-orange-500 dark:text-orange-400 text-xs md:text-sm font-semibold">
+                      <Sun className="w-4 h-4" />
+                      <span>UV {Math.round(daily.uv_index_max[index])}</span>
                     </div>
                   )}
-                  <div className="flex items-center space-x-2">
-                    <span className="text-lg md:text-xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent dark:from-orange-400 dark:to-red-400">
-                      {Math.round(maxTemp)}°
-                    </span>
-                    <span className="text-lg md:text-xl font-semibold text-gray-500 dark:text-gray-400">
-                      {Math.round(minTemp)}°
-                    </span>
+                  <div className="flex flex-col items-end">
+                    <div className="flex items-center space-x-1">
+                      <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase">High</span>
+                      <span className="text-lg md:text-xl font-bold text-orange-600 dark:text-orange-400">
+                        {Math.round(maxTemp)}°
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-[10px] text-gray-500 dark:text-gray-400 uppercase">Low</span>
+                      <span className="text-lg md:text-xl font-semibold text-gray-600 dark:text-gray-400">
+                        {Math.round(minTemp)}°
+                      </span>
+                    </div>
                   </div>
                   {hourly && (
                     <button className="ml-2 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300">
