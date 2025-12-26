@@ -100,13 +100,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className="relative w-full max-w-2xl mx-auto animate-fade-in z-50">
       <div className="flex space-x-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4 drop-shadow-md" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-5 h-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
           <input
             type="text"
             value={query}
             onChange={(e) => debouncedSearch(e.target.value)}
             placeholder="Search for a city..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-md border border-white/40 focus:border-white/60 focus:bg-white/35 focus:outline-none text-white placeholder-white/70 text-base transition-all shadow-lg"
+            className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-md border border-white/40 focus:border-white/60 focus:bg-white/35 focus:outline-none text-white placeholder-white/70 text-base transition-all shadow-lg"
             aria-label="Search for a city"
           />
           {isSearching && (

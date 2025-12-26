@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wind, Droplets } from 'lucide-react';
+import { Wind, Droplets, ThermometerSun } from 'lucide-react';
 import { CurrentWeather, Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 import { storageService, TemperatureUnit, WindSpeedUnit } from '../services/storageService';
@@ -68,37 +68,37 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
           </div>
           
           {/* Weather Description */}
-          <p className="text-2xl md:text-3xl mb-8 capitalize drop-shadow-lg font-medium">
+          <p className="text-2xl md:text-3xl mb-4 capitalize drop-shadow-lg font-medium">
             {weatherInfo.description}
           </p>
           
-          {/* Weather Stats Cards */}
-          <div className="grid grid-cols-2 gap-4 w-full max-w-sm mt-4">
-            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl p-4 shadow-lg animate-slide-up" style={{ animationDelay: '0.1s' }}>
-              <div className="flex items-center space-x-3">
-                <div className="bg-blue-500/20 p-2 rounded-xl">
-                  <Wind className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">Wind</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">{Math.round(windSpeed)} {windSymbol}</p>
-                </div>
+          {/* Weather Stats - Integrated without containers */}
+          <div className="flex items-center space-x-6 mt-4">
+            <div className="flex items-center space-x-2">
+              <Wind className="w-5 h-5 text-white drop-shadow-md" />
+              <div className="text-white drop-shadow-lg">
+                <p className="text-xs font-medium opacity-90">Wind</p>
+                <p className="text-lg font-bold">{Math.round(windSpeed)} {windSymbol}</p>
               </div>
             </div>
             
             {humidity !== undefined && (
-              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl p-4 shadow-lg animate-slide-up" style={{ animationDelay: '0.2s' }}>
-                <div className="flex items-center space-x-3">
-                  <div className="bg-cyan-500/20 p-2 rounded-xl">
-                    <Droplets className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">Humidity</p>
-                    <p className="text-lg font-bold text-gray-900 dark:text-white">{Math.round(humidity)}%</p>
-                  </div>
+              <div className="flex items-center space-x-2">
+                <Droplets className="w-5 h-5 text-white drop-shadow-md" />
+                <div className="text-white drop-shadow-lg">
+                  <p className="text-xs font-medium opacity-90">Humidity</p>
+                  <p className="text-lg font-bold">{Math.round(humidity)}%</p>
                 </div>
               </div>
             )}
+            
+            <div className="flex items-center space-x-2">
+              <ThermometerSun className="w-5 h-5 text-white drop-shadow-md" />
+              <div className="text-white drop-shadow-lg">
+                <p className="text-xs font-medium opacity-90">Feels Like</p>
+                <p className="text-lg font-bold">{Math.round(storageService.convertTemperature(weather.apparent_temperature, temperatureUnit))}°</p>
+              </div>
+            </div>
           </div>
         </div>
         </div>
