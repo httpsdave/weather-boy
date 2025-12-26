@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Search, MapPin, Loader } from 'lucide-react';
 import { Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
+import { storageService } from '../services/storageService';
 
 interface SearchBarProps {
   onLocationSelect: (location: Location) => void;
@@ -62,6 +63,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleSelectLocation = (location: Location) => {
     onLocationSelect(location);
+    storageService.addRecentSearch(location);
     setQuery('');
     setResults([]);
     setShowResults(false);

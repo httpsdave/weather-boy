@@ -38,6 +38,13 @@ export interface WeatherData {
   timezone: string;
 }
 
+export interface AirQuality {
+  european_aqi: number;
+  us_aqi: number;
+  pm10: number;
+  pm2_5: number;
+}
+
 export interface Location {
   name: string;
   latitude: number;

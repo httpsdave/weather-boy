@@ -28,30 +28,30 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
         onClick={onClose}
         aria-label="Close settings"
       />
-      <div className="fixed right-4 top-20 bg-white rounded-2xl shadow-2xl z-50 p-6 w-80 animate-slide-up">
-        <div className="flex items-center justify-between mb-6">
+      <div className="fixed right-2 md:right-4 top-16 md:top-20 bg-white rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm animate-slide-up">
+        <div className="flex items-center justify-between mb-4 md:mb-6">
           <div className="flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-weather-blue" />
-            <h3 className="text-lg font-bold text-gray-800">Settings</h3>
+            <Settings className="w-4 h-4 md:w-5 md:h-5 text-weather-blue" />
+            <h3 className="text-base md:text-lg font-bold text-gray-800">Settings</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 p-1"
             aria-label="Close settings panel"
           >
             ✕
           </button>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2 md:mb-3">
               Temperature Unit
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => onTemperatureUnitChange('celsius')}
-                className={`py-2 px-4 rounded-xl font-medium transition-all ${
+                className={`py-2 px-3 md:px-4 rounded-xl text-sm md:text-base font-medium transition-all active:scale-95 ${
                   temperatureUnit === 'celsius'
                     ? 'bg-weather-blue text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -62,7 +62,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </button>
               <button
                 onClick={() => onTemperatureUnitChange('fahrenheit')}
-                className={`py-2 px-4 rounded-xl font-medium transition-all ${
+                className={`py-2 px-3 md:px-4 rounded-xl text-sm md:text-base font-medium transition-all active:scale-95 ${
                   temperatureUnit === 'fahrenheit'
                     ? 'bg-weather-blue text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -75,13 +75,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-xs md:text-sm font-medium text-gray-700 mb-2 md:mb-3">
               Wind Speed Unit
             </label>
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => onWindSpeedUnitChange('kmh')}
-                className={`py-2 px-4 rounded-xl font-medium transition-all ${
+                className={`py-2 px-3 md:px-4 rounded-xl text-sm md:text-base font-medium transition-all active:scale-95 ${
                   windSpeedUnit === 'kmh'
                     ? 'bg-weather-blue text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -92,7 +92,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               </button>
               <button
                 onClick={() => onWindSpeedUnitChange('mph')}
-                className={`py-2 px-4 rounded-xl font-medium transition-all ${
+                className={`py-2 px-3 md:px-4 rounded-xl text-sm md:text-base font-medium transition-all active:scale-95 ${
                   windSpeedUnit === 'mph'
                     ? 'bg-weather-blue text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

@@ -1,7 +1,8 @@
-import { WeatherData, GeocodingResult } from '../types/weather';
+import { WeatherData, GeocodingResult, AirQuality } from '../types/weather';
 
 const BASE_URL = 'https://api.open-meteo.com/v1';
 const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1';
+const AIR_QUALITY_URL = 'https://air-quality-api.open-meteo.com/v1';
 
 export const weatherService = {
   async getCurrentWeather(latitude: number, longitude: number): Promise<WeatherData> {
@@ -78,5 +79,42 @@ export const weatherService = {
     const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
     const index = Math.round(degrees / 22.5) % 16;
     return directions[index];
+  },
+
+  async getAirQuality(latitude: number, longitude: number): Promise<AirQuality | null> {
+    try {
+      const params = new URLSearchParams({
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+        current: 'european_aqi,us_aqi,pm10,pm2_5',
+      });
+
+      const response = await fetch(`${AIR_QUALITY_URL}/air-quality?${params}`);
+      if (!response.ok) {
+        return null;
+      }
+
+      const data = await response.json();
+      return data.current;
+    } catch (error) {
+      console.error('Failed to fetch air quality:', error);
+      return null;
+    }
+  },
+
+  getAQILevel(aqi: number): { level: string; color: string; description: string } {
+    if (aqi <= 50) {
+      return { level: 'Good', color: 'text-green-600', description: 'Air quality is satisfactory' };
+    } else if (aqi <= 100) {
+      return { level: 'Moderate', color: 'text-yellow-600', description: 'Air quality is acceptable' };
+    } else if (aqi <= 150) {
+      return { level: 'Unhealthy for Sensitive Groups', color: 'text-orange-600', description: 'Sensitive groups may experience health effects' };
+    } else if (aqi <= 200) {
+      return { level: 'Unhealthy', color: 'text-red-600', description: 'Everyone may experience health effects' };
+    } else if (aqi <= 300) {
+      return { level: 'Very Unhealthy', color: 'text-purple-600', description: 'Health alert: everyone may experience serious effects' };
+    } else {
+      return { level: 'Hazardous', color: 'text-red-900', description: 'Health warning of emergency conditions' };
+    }
   },
 };

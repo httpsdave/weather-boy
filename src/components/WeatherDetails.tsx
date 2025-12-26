@@ -71,19 +71,19 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-xl animate-slide-up">
-      <h3 className="text-xl font-bold text-gray-800 mb-4">Weather Details</h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="bg-white rounded-3xl p-4 md:p-6 shadow-xl animate-slide-up">
+      <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4">Weather Details</h3>
+      <div className="grid grid-cols-2 gap-3 md:gap-4">
         {details.map((detail, index) => (
           <div
             key={index}
-            className="bg-gray-50 rounded-2xl p-4 hover:bg-blue-50 transition-colors"
+            className="bg-gray-50 rounded-xl md:rounded-2xl p-3 md:p-4 hover:bg-blue-50 transition-colors active:scale-95"
           >
-            <div className="flex items-center space-x-2 text-weather-blue mb-2">
+            <div className="flex items-center space-x-1 md:space-x-2 text-weather-blue mb-1 md:mb-2">
               {detail.icon}
               <span className="text-xs font-medium text-gray-600">{detail.label}</span>
             </div>
-            <p className="text-lg font-bold text-gray-800">{detail.value}</p>
+            <p className="text-base md:text-lg font-bold text-gray-800 break-words">{detail.value}</p>
           </div>
         ))}
       </div>

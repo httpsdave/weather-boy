@@ -1,4 +1,4 @@
-import { Cloud, Settings as SettingsIcon } from 'lucide-react';
+import { Cloud, Settings as SettingsIcon, Star, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useWeather } from './hooks/useWeather';
 import { storageService, TemperatureUnit, WindSpeedUnit } from './services/storageService';
@@ -6,11 +6,13 @@ import CurrentWeatherCard from './components/CurrentWeatherCard';
 import HourlyForecast from './components/HourlyForecast';
 import DailyForecast from './components/DailyForecast';
 import SearchBar from './components/SearchBar';
-import LoadingSpinner from './components/LoadingSpinner';
 import ErrorMessage from './components/ErrorMessage';
 import ErrorBoundary from './components/ErrorBoundary';
 import SettingsPanel from './components/SettingsPanel';
 import WeatherDetails from './components/WeatherDetails';
+import WeatherSkeleton from './components/WeatherSkeleton';
+import SavedLocations from './components/SavedLocations';
+import AirQualityCard from './components/AirQualityCard';
 
 function App() {
   const {
@@ -30,6 +32,8 @@ function App() {
     storageService.getPreferences().windSpeedUnit
   );
   const [showSettings, setShowSettings] = useState(false);
+  const [showSavedLocations, setShowSavedLocations] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleTemperatureUnitChange = (unit: TemperatureUnit) => {
     setTemperatureUnit(unit);
@@ -39,6 +43,14 @@ function App() {
   const handleWindSpeedUnitChange = (unit: WindSpeedUnit) => {
     setWindSpeedUnit(unit);
     storageService.savePreferences({ windSpeedUnit: unit });
+  };
+
+  const handleRefresh = async () => {
+    if (currentLocation && !isRefreshing) {
+      setIsRefreshing(true);
+      await handleLocationSelect(currentLocation);
+      setTimeout(() => setIsRefreshing(false), 1000);
+    }
   };
 
   return (
@@ -59,16 +71,42 @@ function App() {
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
-                aria-label="Open settings"
-              >
-                <SettingsIcon className="w-6 h-6 text-gray-600" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setShowSavedLocations(!showSavedLocations)}
+                  className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
+                  aria-label="Open saved locations"
+                >
+                  <Star className={`w-6 h-6 ${showSavedLocations ? 'fill-yellow-400 text-yellow-400' : 'text-gray-600'}`} />
+                </button>
+                {weatherData && (
+                  <button
+                    onClick={handleRefresh}
+                    disabled={isRefreshing}
+                    className="p-3 hover:bg-gray-100 rounded-xl transition-colors disabled:opacity-50"
+                    aria-label="Refresh weather data"
+                  >
+                    <RefreshCw className={`w-6 h-6 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  </button>
+                )}
+                <button
+                  onClick={() => setShowSettings(!showSettings)}
+                  className="p-3 hover:bg-gray-100 rounded-xl transition-colors"
+                  aria-label="Open settings"
+                >
+                  <SettingsIcon className="w-6 h-6 text-gray-600" />
+                </button>
+              </div>
             </div>
           </div>
         </header>
+
+        <SavedLocations
+          onLocationSelect={handleLocationSelect}
+          currentLocation={currentLocation}
+          isOpen={showSavedLocations}
+          onClose={() => setShowSavedLocations(false)}
+        />
 
         <SettingsPanel
           temperatureUnit={temperatureUnit}
@@ -87,7 +125,7 @@ function App() {
             isLoadingLocation={loading && !weatherData}
           />
 
-          {loading && !weatherData && <LoadingSpinner />}
+          {loading && !weatherData && <WeatherSkeleton />}
 
           {error && !weatherData && (
             <ErrorMessage message={error} onRetry={retryFetch} />
@@ -103,14 +141,23 @@ function App() {
                 windSpeedUnit={windSpeedUnit}
               />
 
-              <WeatherDetails
-                weather={weatherData.current}
-                sunrise={weatherData.daily.sunrise[0]}
-                sunset={weatherData.daily.sunset[0]}
-                humidity={weatherData.hourly.relative_humidity_2m[0]}
-                temperatureUnit={temperatureUnit}
-                windSpeedUnit={windSpeedUnit}
-              />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <WeatherDetails
+                  weather={weatherData.current}
+                  sunrise={weatherData.daily.sunrise[0]}
+                  sunset={weatherData.daily.sunset[0]}
+                  humidity={weatherData.hourly.relative_humidity_2m[0]}
+                  temperatureUnit={temperatureUnit}
+                  windSpeedUnit={windSpeedUnit}
+                />
+
+                {currentLocation && (
+                  <AirQualityCard
+                    latitude={currentLocation.latitude}
+                    longitude={currentLocation.longitude}
+                  />
+                )}
+              </div>
 
               <HourlyForecast
                 hourly={weatherData.hourly}
