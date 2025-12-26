@@ -97,27 +97,27 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto mb-6 animate-fade-in z-50">
+    <div className="relative w-full max-w-2xl mx-auto animate-fade-in z-50">
       <div className="flex space-x-2">
         <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5" />
           <input
             type="text"
             value={query}
             onChange={(e) => debouncedSearch(e.target.value)}
             placeholder="Search for a city..."
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-600 focus:border-weather-blue focus:outline-none text-gray-800 dark:text-white dark:bg-gray-700 text-lg transition-colors"
+            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/20 backdrop-blur-md border-2 border-white/30 focus:border-white/50 focus:bg-white/25 focus:outline-none text-white placeholder-white/60 text-lg transition-all"
             aria-label="Search for a city"
           />
           {isSearching && (
-            <Loader className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 animate-spin" />
+            <Loader className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5 animate-spin" />
           )}
         </div>
         
         <button
           onClick={onUseCurrentLocation}
           disabled={isLoadingLocation}
-          className="bg-weather-blue hover:bg-blue-600 text-white px-6 py-4 rounded-2xl font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          className="bg-white/25 hover:bg-white/35 backdrop-blur-md text-white border-2 border-white/30 px-6 py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
         >
           {isLoadingLocation ? (
             <Loader className="w-5 h-5 animate-spin" />

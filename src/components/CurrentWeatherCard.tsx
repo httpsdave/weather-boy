@@ -1,9 +1,10 @@
 import React from 'react';
 import { Wind, Droplets } from 'lucide-react';
-import { CurrentWeather } from '../types/weather';
+import { CurrentWeather, Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
 import { storageService, TemperatureUnit, WindSpeedUnit } from '../services/storageService';
 import { getWeatherBackground } from './WeatherBackgrounds';
+import SearchBar from './SearchBar';
 
 interface CurrentWeatherCardProps {
   weather: CurrentWeather;
@@ -11,6 +12,9 @@ interface CurrentWeatherCardProps {
   humidity?: number;
   temperatureUnit: TemperatureUnit;
   windSpeedUnit: WindSpeedUnit;
+  onLocationSelect: (location: Location) => void;
+  onUseCurrentLocation: () => void;
+  isLoadingLocation: boolean;
 }
 
 const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({ 
@@ -19,6 +23,9 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   humidity,
   temperatureUnit,
   windSpeedUnit,
+  onLocationSelect,
+  onUseCurrentLocation,
+  isLoadingLocation,
 }) => {
   const weatherInfo = weatherService.getWeatherDescription(
     weather.weather_code,
@@ -32,14 +39,25 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
   const WeatherBackground = getWeatherBackground(weather.weather_code, weather.is_day === 1);
 
   return (
-    <div className="relative overflow-hidden rounded-[32px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] animate-fade-in">
+    <div className="relative overflow-hidden animate-fade-in">
       {/* Illustrated Weather Background */}
       <div className="absolute inset-0 z-0">
         <WeatherBackground className="w-full h-full object-cover" />
       </div>
       
-      {/* Content Overlay */}
-      <div className="relative z-10 bg-gradient-to-b from-transparent via-black/10 to-black/30 p-6 md:p-8">
+      {/* Content Overlay with gradient fade */}
+      <div className="relative z-10 bg-gradient-to-b from-black/20 via-black/10 to-black/40 py-8 md:py-12">
+        <div className="container mx-auto px-4 max-w-7xl">
+        {/* Integrated SearchBar */}
+        <div className="mb-6">
+          <SearchBar
+            onLocationSelect={onLocationSelect}
+            onUseCurrentLocation={onUseCurrentLocation}
+            isLoadingLocation={isLoadingLocation}
+            temperatureUnit={temperatureUnit}
+          />
+        </div>
+        
         <div className="flex flex-col items-center text-white">
           {/* Location */}
           <h2 className="text-xl md:text-2xl font-semibold mb-4 drop-shadow-lg">{locationName}</h2>
@@ -82,6 +100,7 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

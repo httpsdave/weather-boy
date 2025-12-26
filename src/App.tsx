@@ -5,7 +5,6 @@ import { storageService, TemperatureUnit, WindSpeedUnit, PrecipitationUnit } fro
 import CurrentWeatherCard from './components/CurrentWeatherCard';
 import HourlyForecast from './components/HourlyForecast';
 import DailyForecast from './components/DailyForecast';
-import SearchBar from './components/SearchBar';
 import ErrorMessage from './components/ErrorMessage';
 import ErrorBoundary from './components/ErrorBoundary';
 import SettingsPanel from './components/SettingsPanel';
@@ -270,14 +269,23 @@ function App() {
           />
 
           {/* Main Content */}
-          <main className="container mx-auto px-4 py-8 max-w-7xl" role="main">
-            <SearchBar
-              onLocationSelect={handleLocationSelect}
-              onUseCurrentLocation={useCurrentLocation}
-              isLoadingLocation={loading && !weatherData}
-              temperatureUnit={temperatureUnit}
-            />
+          <main role="main">
+            {/* Full-width Weather Card */}
+            {weatherData && (
+              <CurrentWeatherCard
+                weather={weatherData.current}
+                locationName={currentLocation?.name || 'Unknown Location'}
+                humidity={weatherData.hourly.relative_humidity_2m[0]}
+                temperatureUnit={temperatureUnit}
+                windSpeedUnit={windSpeedUnit}
+                onLocationSelect={handleLocationSelect}
+                onUseCurrentLocation={useCurrentLocation}
+                isLoadingLocation={loading && !weatherData}
+              />
+            )}
 
+            {/* Contained Content */}
+            <div className="container mx-auto px-4 py-8 max-w-7xl">
             {lastUpdated && weatherData && (
               <div className="text-center text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Updated {getTimeSinceUpdate()}
@@ -292,13 +300,6 @@ function App() {
 
             {weatherData && (
               <div className="space-y-6">
-                <CurrentWeatherCard
-                  weather={weatherData.current}
-                  locationName={currentLocation?.name || 'Unknown Location'}
-                  humidity={weatherData.hourly.relative_humidity_2m[0]}
-                  temperatureUnit={temperatureUnit}
-                  windSpeedUnit={windSpeedUnit}
-                />
 
                 <WeatherDetails
                   weather={weatherData.current}
@@ -335,6 +336,7 @@ function App() {
                 />
               </div>
             )}
+            </div>
           </main>
 
           <WeatherAlerts weather={weatherData} />
