@@ -1,9 +1,14 @@
 export interface CurrentWeather {
   time: string;
   temperature_2m: number;
+  apparent_temperature: number;
   wind_speed_10m: number;
+  wind_direction_10m: number;
   weather_code: number;
   is_day: number;
+  uv_index: number;
+  pressure_msl: number;
+  precipitation: number;
 }
 
 export interface HourlyWeather {
@@ -12,6 +17,7 @@ export interface HourlyWeather {
   relative_humidity_2m: number[];
   wind_speed_10m: number[];
   weather_code: number[];
+  precipitation_probability: number[];
 }
 
 export interface DailyWeather {
@@ -20,6 +26,9 @@ export interface DailyWeather {
   temperature_2m_max: number[];
   temperature_2m_min: number[];
   precipitation_probability_max: number[];
+  sunrise: string[];
+  sunset: string[];
+  uv_index_max: number[];
 }
 
 export interface WeatherData {

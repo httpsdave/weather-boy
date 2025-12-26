@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { WeatherData, Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
+import { storageService } from '../services/storageService';
 
 export const useWeather = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -25,6 +26,7 @@ export const useWeather = () => {
   const handleLocationSelect = useCallback((location: Location) => {
     setCurrentLocation(location);
     fetchWeather(location.latitude, location.longitude);
+    storageService.savePreferences({ lastLocation: location });
   }, [fetchWeather]);
 
   const useCurrentLocation = useCallback(() => {
@@ -57,8 +59,15 @@ export const useWeather = () => {
   }, [fetchWeather]);
 
   useEffect(() => {
-    // On initial load, try to use current location
-    useCurrentLocation();
+    // Try to load last location from storage
+    const preferences = storageService.getPreferences();
+    if (preferences.lastLocation) {
+      setCurrentLocation(preferences.lastLocation);
+      fetchWeather(preferences.lastLocation.latitude, preferences.lastLocation.longitude);
+    } else {
+      // Fall back to current location
+      useCurrentLocation();
+    }
   }, []);
 
   return {

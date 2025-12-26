@@ -8,9 +8,9 @@ export const weatherService = {
     const params = new URLSearchParams({
       latitude: latitude.toString(),
       longitude: longitude.toString(),
-      current: 'temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,is_day',
-      hourly: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code',
-      daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max',
+      current: 'temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,is_day,uv_index,pressure_msl,precipitation',
+      hourly: 'temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,precipitation_probability',
+      daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset,uv_index_max',
       timezone: 'auto',
       forecast_days: '7',
     });
@@ -72,5 +72,11 @@ export const weatherService = {
       description: weather.description,
       icon: isDay ? weather.dayIcon : weather.nightIcon,
     };
+  },
+
+  getWindDirection(degrees: number): string {
+    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const index = Math.round(degrees / 22.5) % 16;
+    return directions[index];
   },
 };

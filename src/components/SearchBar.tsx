@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Search, MapPin, Loader } from 'lucide-react';
 import { Location } from '../types/weather';
 import { weatherService } from '../services/weatherService';
@@ -18,10 +18,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [results, setResults] = useState<Location[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const handleSearch = async (searchQuery: string) => {
-    setQuery(searchQuery);
-    
+  const handleSearch = useCallback(async (searchQuery: string) => {
     if (searchQuery.length < 2) {
       setResults([]);
       setShowResults(false);
@@ -39,7 +38,27 @@ const SearchBar: React.FC<SearchBarProps> = ({
     } finally {
       setIsSearching(false);
     }
-  };
+  }, []);
+
+  const debouncedSearch = useCallback((searchQuery: string) => {
+    setQuery(searchQuery);
+    
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      handleSearch(searchQuery);
+    }, 300);
+  }, [handleSearch]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleSelectLocation = (location: Location) => {
     onLocationSelect(location);
@@ -56,9 +75,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <input
             type="text"
             value={query}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => debouncedSearch(e.target.value)}
             placeholder="Search for a city..."
             className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-gray-200 focus:border-weather-blue focus:outline-none text-gray-800 text-lg transition-colors"
+            aria-label="Search for a city"
           />
           {isSearching && (
             <Loader className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 animate-spin" />

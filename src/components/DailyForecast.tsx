@@ -2,12 +2,14 @@ import React from 'react';
 import { format, parseISO } from 'date-fns';
 import { DailyWeather } from '../types/weather';
 import { weatherService } from '../services/weatherService';
+import { storageService, TemperatureUnit } from '../services/storageService';
 
 interface DailyForecastProps {
   daily: DailyWeather;
+  temperatureUnit: TemperatureUnit;
 }
 
-const DailyForecast: React.FC<DailyForecastProps> = ({ daily }) => {
+const DailyForecast: React.FC<DailyForecastProps> = ({ daily, temperatureUnit }) => {
   return (
     <div className="bg-white rounded-3xl p-6 shadow-xl animate-slide-up">
       <h3 className="text-xl font-bold text-gray-800 mb-4">7-Day Forecast</h3>
@@ -17,6 +19,8 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily }) => {
             daily.weather_code[index],
             true
           );
+          const maxTemp = storageService.convertTemperature(daily.temperature_2m_max[index], temperatureUnit);
+          const minTemp = storageService.convertTemperature(daily.temperature_2m_min[index], temperatureUnit);
           
           return (
             <div
@@ -39,12 +43,17 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily }) => {
                     <span>💧 {Math.round(daily.precipitation_probability_max[index])}%</span>
                   </div>
                 )}
+                {daily.uv_index_max[index] > 6 && (
+                  <div className="flex items-center text-orange-500 text-sm">
+                    <span>☀️ {Math.round(daily.uv_index_max[index])}</span>
+                  </div>
+                )}
                 <div className="flex items-center space-x-2">
                   <span className="text-lg font-bold text-gray-800">
-                    {Math.round(daily.temperature_2m_max[index])}°
+                    {Math.round(maxTemp)}°
                   </span>
                   <span className="text-lg text-gray-500">
-                    {Math.round(daily.temperature_2m_min[index])}°
+                    {Math.round(minTemp)}°
                   </span>
                 </div>
               </div>
