@@ -32,7 +32,16 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed right-2 md:right-4 top-16 md:top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm max-h-[80vh] overflow-y-auto origin-top-right animate-dropdown">
+    <>
+      {/* Mobile overlay */}
+      <div
+        className="fixed inset-0 bg-black/50 z-50 md:hidden transition-opacity duration-200"
+        onClick={onClose}
+        aria-label="Close saved locations"
+      />
+      
+      {/* Mobile: Full screen modal, Desktop: Dropdown */}
+      <div className="fixed inset-0 md:inset-auto md:right-2 md:right-4 md:top-16 md:top-20 bg-white dark:bg-gray-800 md:rounded-2xl md:shadow-2xl z-50 p-4 md:p-6 md:w-[calc(100%-1rem)] md:max-w-xs md:max-w-sm overflow-y-auto md:origin-top-right md:animate-dropdown animate-slide-up">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <Star className="w-5 h-5 text-weather-blue" />
@@ -145,6 +154,7 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
           </div>
         )}
       </div>
+    </>
   );
 };
 
