@@ -106,12 +106,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
             value={query}
             onChange={(e) => debouncedSearch(e.target.value)}
             placeholder="Search for a city..."
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/30 backdrop-blur-md border border-white/40 focus:border-white/60 focus:bg-white/35 focus:outline-none text-white placeholder-white/70 text-base transition-all shadow-lg"
+            className="w-full pl-11 pr-10 py-2.5 rounded-xl bg-white/30 backdrop-blur-md border border-white/40 focus:border-white/60 focus:bg-white/35 focus:outline-none text-white placeholder-white/70 text-base transition-all shadow-lg"
             aria-label="Search for a city"
           />
-          {isSearching && (
-            <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white w-4 h-4 animate-spin drop-shadow-md" />
-          )}
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4">
+            <Loader className={`w-4 h-4 text-white drop-shadow-md transition-opacity duration-200 ${isSearching ? 'opacity-100 animate-spin' : 'opacity-0'}`} />
+          </div>
         </div>
         
         <button

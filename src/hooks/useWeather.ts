@@ -47,15 +47,43 @@ export const useWeather = () => {
     }
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const { latitude, longitude } = position.coords;
+        
+        // Set temporary location while fetching name
         setCurrentLocation({
           name: 'Current Location',
           latitude,
           longitude,
           country: '',
         });
-        fetchWeather(latitude, longitude);
+        
+        // Fetch weather first
+        await fetchWeather(latitude, longitude);
+        
+        // Then do reverse geocoding to get actual location name
+        try {
+          const response = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=en&format=json`
+          );
+          const data = await response.json();
+          
+          if (data.results && data.results.length > 0) {
+            const location = data.results[0];
+            const actualLocation = {
+              name: location.name,
+              latitude,
+              longitude,
+              country: location.country || '',
+              admin1: location.admin1,
+            };
+            setCurrentLocation(actualLocation);
+            storageService.savePreferences({ lastLocation: actualLocation });
+          }
+        } catch (err) {
+          console.error('Reverse geocoding error:', err);
+          // Keep 'Current Location' as fallback
+        }
       },
       (err) => {
         setError('Unable to retrieve your location. Please search for a city.');
