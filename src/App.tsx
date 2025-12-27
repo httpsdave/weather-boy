@@ -16,7 +16,6 @@ import ShareWeather from './components/ShareWeather';
 import MobileSidebar from './components/MobileSidebar';
 import ComparisonWidget from './components/ComparisonWidget';
 import TemperatureChart from './components/TemperatureChart';
-import WeatherAlerts from './components/WeatherAlerts';
 import PullToRefresh from './components/PullToRefresh';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useTheme } from './contexts/ThemeContext';
@@ -354,8 +353,6 @@ function App() {
             )}
             </div>
           </main>
-
-          <WeatherAlerts weather={weatherData} />
 
           {/* Footer */}
           <footer className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md mt-16 py-6" role="contentinfo">
