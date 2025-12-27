@@ -32,21 +32,15 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
   if (!isOpen) return null;
 
   return (
-    <>
-      <div
-        className="fixed inset-0 bg-black/50 z-50 transition-opacity duration-150"
-        onClick={onClose}
-        aria-label="Close saved locations"
-      />
-      <div className="fixed left-2 md:left-4 top-16 md:top-20 bg-white rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm max-h-[80vh] overflow-y-auto transition-all duration-150">{" "}
+    <div className="fixed right-2 md:right-4 top-16 md:top-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-4 md:p-6 w-[calc(100%-1rem)] max-w-xs md:max-w-sm max-h-[80vh] overflow-y-auto origin-top-right animate-dropdown">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <Star className="w-5 h-5 text-weather-blue" />
-            <h3 className="text-lg font-bold text-gray-800">Saved & Recent</h3>
+            <h3 className="text-lg font-bold text-gray-800 dark:text-white">Saved & Recent</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
             aria-label="Close saved locations panel"
           >
             <X className="w-5 h-5" />
@@ -58,16 +52,16 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
           <div className="mb-6">
             <div className="flex items-center space-x-2 mb-3">
               <MapPin className="w-4 h-4 text-weather-blue" />
-              <h4 className="text-sm font-semibold text-gray-700">Current</h4>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Current</h4>
             </div>
             <button
               onClick={() => handleToggleSave(currentLocation)}
-              className="w-full text-left px-4 py-3 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors border-2 border-weather-blue"
+              className="w-full text-left px-4 py-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors border-2 border-weather-blue"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-gray-800">{currentLocation.name}</p>
-                  <p className="text-xs text-gray-500">{currentLocation.country}</p>
+                  <p className="font-semibold text-gray-800 dark:text-white">{currentLocation.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{currentLocation.country}</p>
                 </div>
                 <Star
                   className={`w-5 h-5 ${
@@ -86,19 +80,19 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
           <div className="mb-6">
             <div className="flex items-center space-x-2 mb-3">
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-              <h4 className="text-sm font-semibold text-gray-700">Saved Locations</h4>
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Saved Locations</h4>
             </div>
             <div className="space-y-2">
               {savedLocations.map((location, index) => (
                 <button
                   key={index}
                   onClick={() => handleSelectLocation(location)}
-                  className="w-full text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors group"
+                  className="w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors group"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-gray-800">{location.name}</p>
-                      <p className="text-xs text-gray-500">{location.country}</p>
+                      <p className="font-semibold text-gray-800 dark:text-white">{location.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{location.country}</p>
                     </div>
                     <button
                       onClick={(e) => {
@@ -120,20 +114,20 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
         {recentSearches.length > 0 && (
           <div>
             <div className="flex items-center space-x-2 mb-3">
-              <Clock className="w-4 h-4 text-gray-500" />
-              <h4 className="text-sm font-semibold text-gray-700">Recent Searches</h4>
+              <Clock className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Recent Searches</h4>
             </div>
             <div className="space-y-2">
               {recentSearches.map((search, index) => (
                 <button
                   key={index}
                   onClick={() => handleSelectLocation(search)}
-                  className="w-full text-left px-4 py-3 bg-gray-50 rounded-xl hover:bg-blue-50 transition-colors"
+                  className="w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-700 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-gray-800">{search.name}</p>
-                      <p className="text-xs text-gray-500">{search.country}</p>
+                      <p className="font-semibold text-gray-800 dark:text-white">{search.name}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{search.country}</p>
                     </div>
                     <Clock className="w-4 h-4 text-gray-400" />
                   </div>
@@ -145,13 +139,12 @@ const SavedLocations: React.FC<SavedLocationsProps> = ({
 
         {savedLocations.length === 0 && recentSearches.length === 0 && (
           <div className="text-center py-8">
-            <Star className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-            <p className="text-gray-500 text-sm">No saved locations yet</p>
-            <p className="text-gray-400 text-xs mt-1">Star a location to save it</p>
+            <Star className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
+            <p className="text-gray-500 dark:text-gray-400 text-sm">No saved locations yet</p>
+            <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Star a location to save it</p>
           </div>
         )}
       </div>
-    </>
   );
 };
 
