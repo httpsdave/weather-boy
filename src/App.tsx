@@ -1,4 +1,4 @@
-import { Cloud, Settings as SettingsIcon, Star, RefreshCw, WifiOff, Sun, Moon, TrendingUp } from 'lucide-react';
+import { Settings as SettingsIcon, Star, RefreshCw, WifiOff, Sun, Moon, TrendingUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useWeather } from './hooks/useWeather';
 import { storageService, TemperatureUnit, WindSpeedUnit, PrecipitationUnit } from './services/storageService';
@@ -195,11 +195,11 @@ function App() {
                     <div className="container mx-auto px-4 py-4">
                       <div className="flex items-center justify-between max-w-7xl mx-auto">
                         {/* Left: Hamburger (Mobile) + Logo */}
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center -space-x-2">
                           {/* Hamburger Menu - Mobile Only */}
                           <button
                             onClick={() => setShowMobileSidebar(true)}
-                            className="md:hidden p-2 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm"
+                            className="md:hidden p-2 hover:bg-white/20 rounded-xl transition-colors backdrop-blur-sm mr-2"
                             aria-label="Open menu"
                           >
                             <svg
@@ -218,21 +218,15 @@ function App() {
                           </button>
                           
                           {/* Logo */}
-                          <div className="flex items-center space-x-2">
-                            {/* Boy with Cloud Hair Icon */}
-                            <svg className="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
-                              {/* Cloud Hair (behind) */}
-                              <g transform="translate(0, -2)">
-                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#E8E8E0" />
-                              </g>
-                              {/* Face (in front) */}
-                              <circle cx="12" cy="14" r="6" fill="#FBBF77" stroke="#1e293b" strokeWidth="1" />
-                              {/* Eyes */}
-                              <circle cx="10" cy="13.5" r="1.2" fill="#1e293b" />
-                              <circle cx="14" cy="13.5" r="1.2" fill="#1e293b" />
-                              {/* Smile */}
-                              <path d="M 9 15.5 Q 12 17.5 15 15.5" stroke="#1e293b" strokeWidth="1.2" fill="none" strokeLinecap="round" />
-                            </svg>
+                          <div className="flex items-center -space-x-1">
+                            {/* Angry Cloud Logo */}
+                            <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+                              <img 
+                                src="/angrycloud.png" 
+                                alt="WeatherBoy Logo" 
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
                             <div>
                               <h1 className="text-lg md:text-2xl font-bold logo-text">
                                 <span className="text-yellow-300">Weather</span><span className="text-sky-300">Boy</span>
