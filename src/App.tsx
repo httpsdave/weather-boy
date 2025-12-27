@@ -192,7 +192,7 @@ function App() {
                 <div className="relative z-10 bg-gradient-to-b from-black/20 via-black/10 to-black/40">
                   {/* Header integrated into weather background */}
                   <header className="sticky top-0 z-40">
-                    <div className="container mx-auto px-4 py-4">
+                    <div className="container mx-auto px-4 py-1">
                       <div className="flex items-center justify-between max-w-7xl mx-auto">
                         {/* Left: Hamburger (Mobile) + Logo */}
                         <div className="flex items-center -space-x-2">
