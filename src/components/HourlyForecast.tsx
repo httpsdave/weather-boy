@@ -130,7 +130,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
                     <Wind className="w-3 h-3" />
                     <span className="font-medium">{Math.round(windSpeed)} {storageService.getWindSpeedSymbol(windSpeedUnit)}</span>
                   </div>
-                  {windGust > windSpeed + 5 && (
+                  {windGust > windSpeed + (windSpeedUnit === 'mph' ? 3.1 : 5) && (
                     <div className="flex items-center space-x-1 text-orange-600 dark:text-orange-400 font-semibold bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 rounded">
                       <AlertTriangle className="w-3 h-3" />
                       <span>Gust {Math.round(windGust)}</span>

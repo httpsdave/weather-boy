@@ -40,7 +40,7 @@ const WeatherDetails: React.FC<WeatherDetailsProps> = ({
       icon: <Wind className="w-5 h-5" />,
       label: 'Wind Gusts',
       value: `${Math.round(windGust)} ${windSymbol}`,
-      highlight: windGust > windSpeed + 10,
+      highlight: windGust > windSpeed + (windSpeedUnit === 'mph' ? 6.2 : 10),
     },
     {
       icon: <Droplets className="w-5 h-5" />,

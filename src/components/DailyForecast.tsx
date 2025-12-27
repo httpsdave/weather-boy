@@ -3,16 +3,17 @@ import { format, parseISO } from 'date-fns';
 import { ChevronDown, ChevronUp, Droplets, Wind, Sun } from 'lucide-react';
 import { DailyWeather, HourlyWeather } from '../types/weather';
 import { weatherService } from '../services/weatherService';
-import { storageService, TemperatureUnit } from '../services/storageService';
+import { storageService, TemperatureUnit, WindSpeedUnit } from '../services/storageService';
 import { getWeatherBackground } from './WeatherBackgrounds';
 
 interface DailyForecastProps {
   daily: DailyWeather;
   hourly?: HourlyWeather;
   temperatureUnit: TemperatureUnit;
+  windSpeedUnit: WindSpeedUnit;
 }
 
-const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatureUnit }) => {
+const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatureUnit, windSpeedUnit }) => {
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
 
   const getHourlyForDay = (dayIndex: number) => {
@@ -91,10 +92,10 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatur
                       <span className="whitespace-nowrap">{Math.round(daily.precipitation_probability_max[index])}%</span>
                     </div>
                   )}
-                  {daily.wind_gusts_10m_max[index] > 40 && (
+                  {storageService.convertWindSpeed(daily.wind_gusts_10m_max[index], windSpeedUnit) > (windSpeedUnit === 'mph' ? 25 : 40) && (
                     <div className="hidden md:flex items-center space-x-1 text-orange-600 dark:text-orange-400 text-xs md:text-sm font-semibold">
                       <Wind className="w-4 h-4" />
-                      <span>{Math.round(daily.wind_gusts_10m_max[index])} gusts</span>
+                      <span>{Math.round(storageService.convertWindSpeed(daily.wind_gusts_10m_max[index], windSpeedUnit))} gusts</span>
                     </div>
                   )}
                   {daily.uv_index_max[index] > 6 && (

@@ -360,6 +360,7 @@ function App() {
                   daily={weatherData.daily}
                   hourly={weatherData.hourly}
                   temperatureUnit={temperatureUnit}
+                  windSpeedUnit={windSpeedUnit}
                 />
 
                 <TemperatureChart
