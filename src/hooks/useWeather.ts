@@ -9,6 +9,32 @@ export const useWeather = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
 
+  type ReverseGeocodeResponse = {
+    city?: string;
+    locality?: string;
+    principalSubdivision?: string;
+    countryName?: string;
+  };
+
+  const reverseGeocode = useCallback(async (latitude: number, longitude: number) => {
+    const response = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Reverse geocoding failed: ${response.status}`);
+    }
+
+    const data = (await response.json()) as ReverseGeocodeResponse;
+    const name = data.city || data.locality || data.principalSubdivision;
+
+    return {
+      name: name || 'Current Location',
+      country: data.countryName || '',
+      admin1: data.principalSubdivision,
+    };
+  }, []);
+
   const fetchWeather = useCallback(async (latitude: number, longitude: number) => {
     try {
       setLoading(true);
@@ -63,23 +89,16 @@ export const useWeather = () => {
         
         // Then do reverse geocoding to get actual location name
         try {
-          const response = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=en&format=json`
-          );
-          const data = await response.json();
-          
-          if (data.results && data.results.length > 0) {
-            const location = data.results[0];
-            const actualLocation = {
-              name: location.name,
-              latitude,
-              longitude,
-              country: location.country || '',
-              admin1: location.admin1,
-            };
-            setCurrentLocation(actualLocation);
-            storageService.savePreferences({ lastLocation: actualLocation });
-          }
+          const resolved = await reverseGeocode(latitude, longitude);
+          const actualLocation = {
+            name: resolved.name,
+            latitude,
+            longitude,
+            country: resolved.country,
+            admin1: resolved.admin1,
+          };
+          setCurrentLocation(actualLocation);
+          storageService.savePreferences({ lastLocation: actualLocation });
         } catch (err) {
           console.error('Reverse geocoding error:', err);
           // Keep 'Current Location' as fallback
@@ -91,7 +110,7 @@ export const useWeather = () => {
         console.error('Geolocation error:', err);
       }
     );
-  }, [fetchWeather]);
+  }, [fetchWeather, reverseGeocode]);
 
   useEffect(() => {
     // Try to load last location from storage
