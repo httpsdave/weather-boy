@@ -3,20 +3,20 @@
 
 export { ClearSkyDay, ClearSkyNight } from './ClearSky';
 export { MainlyClearDay, MainlyClearNight } from './MainlyClear';
-export { PartlyCloudy, Overcast } from './CloudyWeather';
-export { Foggy } from './Foggy';
-export { LightDrizzle, ModerateRain, HeavyRain } from './RainyWeather';
-export { LightSnow, ModerateSnow, HeavySnow } from './SnowyWeather';
-export { LightShowers, HeavyShowers, Thunderstorm } from './StormsAndShowers';
+export { PartlyCloudy, PartlyCloudyDay, PartlyCloudyNight, Overcast, OvercastDay, OvercastNight } from './CloudyWeather';
+export { Foggy, FoggyDay, FoggyNight } from './Foggy';
+export { LightDrizzle, LightDrizzleDay, LightDrizzleNight, ModerateRain, ModerateRainDay, ModerateRainNight, HeavyRain, HeavyRainDay, HeavyRainNight } from './RainyWeather';
+export { LightSnow, LightSnowDay, LightSnowNight, ModerateSnow, ModerateSnowDay, ModerateSnowNight, HeavySnow, HeavySnowDay, HeavySnowNight } from './SnowyWeather';
+export { LightShowers, LightShowersDay, LightShowersNight, HeavyShowers, HeavyShowersDay, HeavyShowersNight, Thunderstorm, ThunderstormDay, ThunderstormNight } from './StormsAndShowers';
 
 import React from 'react';
 import { ClearSkyDay, ClearSkyNight } from './ClearSky';
 import { MainlyClearDay, MainlyClearNight } from './MainlyClear';
-import { PartlyCloudy, Overcast } from './CloudyWeather';
-import { Foggy } from './Foggy';
-import { LightDrizzle, ModerateRain, HeavyRain } from './RainyWeather';
-import { LightSnow, ModerateSnow, HeavySnow } from './SnowyWeather';
-import { LightShowers, HeavyShowers, Thunderstorm } from './StormsAndShowers';
+import { PartlyCloudyDay, PartlyCloudyNight, OvercastDay, OvercastNight } from './CloudyWeather';
+import { FoggyDay, FoggyNight } from './Foggy';
+import { LightDrizzleDay, LightDrizzleNight, ModerateRainDay, ModerateRainNight, HeavyRainDay, HeavyRainNight } from './RainyWeather';
+import { LightSnowDay, LightSnowNight, ModerateSnowDay, ModerateSnowNight, HeavySnowDay, HeavySnowNight } from './SnowyWeather';
+import { LightShowersDay, LightShowersNight, HeavyShowersDay, HeavyShowersNight, ThunderstormDay, ThunderstormNight } from './StormsAndShowers';
 
 /**
  * Get the appropriate weather background component based on WMO weather code
@@ -40,65 +40,65 @@ export function getWeatherBackground(
   
   // Partly cloudy (2)
   if (weatherCode === 2) {
-    return PartlyCloudy;
+    return isDay ? PartlyCloudyDay : PartlyCloudyNight;
   }
   
   // Overcast (3)
   if (weatherCode === 3) {
-    return Overcast;
+    return isDay ? OvercastDay : OvercastNight;
   }
   
   // Fog (45, 48)
   if (weatherCode === 45 || weatherCode === 48) {
-    return Foggy;
+    return isDay ? FoggyDay : FoggyNight;
   }
   
   // Drizzle (51, 53, 55)
   if (weatherCode === 51 || weatherCode === 53 || weatherCode === 55) {
-    return LightDrizzle;
+    return isDay ? LightDrizzleDay : LightDrizzleNight;
   }
   
   // Rain (61 = slight, 63 = moderate, 65 = heavy)
   if (weatherCode === 61) {
-    return LightDrizzle;
+    return isDay ? LightDrizzleDay : LightDrizzleNight;
   }
   if (weatherCode === 63) {
-    return ModerateRain;
+    return isDay ? ModerateRainDay : ModerateRainNight;
   }
   if (weatherCode === 65) {
-    return HeavyRain;
+    return isDay ? HeavyRainDay : HeavyRainNight;
   }
   
   // Snow (71 = light, 73 = moderate, 75 = heavy, 77 = grains)
   if (weatherCode === 71) {
-    return LightSnow;
+    return isDay ? LightSnowDay : LightSnowNight;
   }
   if (weatherCode === 73) {
-    return ModerateSnow;
+    return isDay ? ModerateSnowDay : ModerateSnowNight;
   }
   if (weatherCode === 75 || weatherCode === 77) {
-    return HeavySnow;
+    return isDay ? HeavySnowDay : HeavySnowNight;
   }
   
   // Rain showers (80 = light, 81 = moderate, 82 = violent)
   if (weatherCode === 80) {
-    return LightShowers;
+    return isDay ? LightShowersDay : LightShowersNight;
   }
   if (weatherCode === 81 || weatherCode === 82) {
-    return HeavyShowers;
+    return isDay ? HeavyShowersDay : HeavyShowersNight;
   }
   
   // Snow showers (85 = light, 86 = heavy)
   if (weatherCode === 85) {
-    return LightSnow;
+    return isDay ? LightSnowDay : LightSnowNight;
   }
   if (weatherCode === 86) {
-    return ModerateSnow;
+    return isDay ? ModerateSnowDay : ModerateSnowNight;
   }
   
   // Thunderstorm (95, 96, 99)
   if (weatherCode === 95 || weatherCode === 96 || weatherCode === 99) {
-    return Thunderstorm;
+    return isDay ? ThunderstormDay : ThunderstormNight;
   }
   
   // Default to clear sky for unknown codes
