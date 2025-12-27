@@ -50,7 +50,16 @@ const CurrentWeatherCard: React.FC<CurrentWeatherCardProps> = ({
         
         <div className="flex flex-col items-center text-white">
           {/* Location */}
-          <h2 className="text-xl md:text-2xl font-semibold mb-4 drop-shadow-lg">{locationName}</h2>
+          <h2 className="text-xl md:text-2xl font-semibold mb-1 drop-shadow-lg">{locationName}</h2>
+          
+          {/* Data timestamp */}
+          <p className="text-xs text-white/60 mb-3 drop-shadow-md">
+            As of {new Date(weather.time).toLocaleTimeString('en-US', { 
+              hour: 'numeric', 
+              minute: '2-digit',
+              hour12: true 
+            })}
+          </p>
           
           {/* Large Temperature Display */}
           <div className="text-8xl md:text-9xl font-bold mb-2 drop-shadow-2xl tracking-tight">
