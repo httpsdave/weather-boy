@@ -219,12 +219,23 @@ function App() {
                           
                           {/* Logo */}
                           <div className="flex items-center space-x-2">
-                            <div className="bg-white/30 backdrop-blur-md p-2 rounded-xl shadow-lg border border-white/40">
-                              <Cloud className="w-6 h-6 md:w-7 md:h-7 text-white drop-shadow-md" />
-                            </div>
+                            {/* Boy with Cloud Hair Icon */}
+                            <svg className="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 24 24" fill="none">
+                              {/* Cloud Hair (behind) */}
+                              <g transform="translate(0, -2)">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="#E8E8E0" />
+                              </g>
+                              {/* Face (in front) */}
+                              <circle cx="12" cy="14" r="6" fill="#FBBF77" stroke="#1e293b" strokeWidth="1" />
+                              {/* Eyes */}
+                              <circle cx="10" cy="13.5" r="1.2" fill="#1e293b" />
+                              <circle cx="14" cy="13.5" r="1.2" fill="#1e293b" />
+                              {/* Smile */}
+                              <path d="M 9 15.5 Q 12 17.5 15 15.5" stroke="#1e293b" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+                            </svg>
                             <div>
-                              <h1 className="text-lg md:text-2xl font-bold text-white drop-shadow-lg">
-                                Weather Boy
+                              <h1 className="text-lg md:text-2xl font-bold logo-text">
+                                <span className="text-yellow-300">Weather</span><span className="text-sky-300">Boy</span>
                               </h1>
                               {!isOnline && (
                                 <div className="flex items-center space-x-1 text-xs font-bold text-white bg-orange-500/70 backdrop-blur-md px-2 py-0.5 rounded-full shadow-lg">

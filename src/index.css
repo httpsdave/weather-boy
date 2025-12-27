@@ -29,6 +29,17 @@ textarea {
   -ms-user-select: text;
 }
 
+/* Playful 3D Logo Font */
+.logo-text {
+  font-family: 'Russo One', sans-serif;
+  text-shadow: 
+    2px 2px 0px rgba(0, 0, 0, 0.3),
+    4px 4px 0px rgba(0, 0, 0, 0.2),
+    0px 4px 12px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+  font-weight: 400;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
