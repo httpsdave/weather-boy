@@ -17,6 +17,7 @@ import MobileSidebar from './components/MobileSidebar';
 import ComparisonWidget from './components/ComparisonWidget';
 import TemperatureChart from './components/TemperatureChart';
 import PullToRefresh from './components/PullToRefresh';
+import InstallPrompt from './components/InstallPrompt';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { useTheme } from './contexts/ThemeContext';
 import { weatherService } from './services/weatherService';
@@ -218,7 +219,7 @@ function App() {
                           </button>
                           
                           {/* Logo */}
-                          <div className="flex items-center -space-x-1">
+                          <div className="flex items-center -space-x-5">
                             {/* Angry Cloud Logo */}
                             <div className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
                               <img 
@@ -228,7 +229,7 @@ function App() {
                               />
                             </div>
                             <div>
-                              <h1 className="text-lg md:text-2xl font-bold logo-text">
+                              <h1 className="text-xl md:text-3xl font-bold logo-text">
                                 <span className="text-yellow-300">Weather</span><span className="text-sky-300">Boy</span>
                               </h1>
                               {!isOnline && (
@@ -390,8 +391,7 @@ function App() {
             </div>
           </footer>
         </div>
-      </PullToRefresh>
-    </ErrorBoundary>
+      </PullToRefresh>      <InstallPrompt />    </ErrorBoundary>
   );
 }
 

@@ -51,11 +51,11 @@ const ShareWeather: React.FC<ShareWeatherProps> = ({ weather, location, temperat
   return (
     <button
       onClick={handleShare}
-      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors"
+      className="p-3 hover:bg-white/30 dark:hover:bg-gray-700 rounded-xl transition-colors backdrop-blur-sm"
       aria-label="Share weather"
       title="Share weather"
     >
-      <Share2 className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+      <Share2 className="w-6 h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] dark:text-gray-300" />
     </button>
   );
 };
