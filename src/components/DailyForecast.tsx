@@ -62,7 +62,18 @@ const DailyForecast: React.FC<DailyForecastProps> = ({ daily, hourly, temperatur
                   <div className="absolute inset-0" style={{ width: '70%' }}>
                     <WeatherBackground className="w-full h-full object-cover" />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-white dark:via-gray-800/80 dark:to-gray-800"></div>
+                  <div 
+                    className="absolute inset-0" 
+                    style={{
+                      background: 'linear-gradient(to right, transparent 0%, transparent 35%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.2) 52%, rgba(255,255,255,0.35) 58%, rgba(255,255,255,0.5) 64%, rgba(255,255,255,0.65) 70%, rgba(255,255,255,0.78) 76%, rgba(255,255,255,0.88) 82%, rgba(255,255,255,0.95) 90%, rgb(255,255,255) 100%)'
+                    }}
+                  ></div>
+                  <div 
+                    className="absolute inset-0 dark:block hidden" 
+                    style={{
+                      background: 'linear-gradient(to right, transparent 0%, transparent 35%, rgba(31,41,55,0.1) 45%, rgba(31,41,55,0.2) 52%, rgba(31,41,55,0.35) 58%, rgba(31,41,55,0.5) 64%, rgba(31,41,55,0.65) 70%, rgba(31,41,55,0.78) 76%, rgba(31,41,55,0.88) 82%, rgba(31,41,55,0.95) 90%, rgb(31,41,55) 100%)'
+                    }}
+                  ></div>
                 </div>
               </div>
               

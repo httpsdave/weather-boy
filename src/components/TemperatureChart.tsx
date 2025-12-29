@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DailyWeather } from '../types/weather';
 import { storageService, TemperatureUnit } from '../services/storageService';
 import { format, parseISO } from 'date-fns';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface TemperatureChartProps {
   daily: DailyWeather;
@@ -32,60 +33,71 @@ const TemperatureChart: React.FC<TemperatureChartProps> = ({ daily, temperatureU
   const maxTemp = Math.max(...allTemps);
   const tempRange = maxTemp - minTemp || 1;
 
-  // Color bars based on temperature
-  const getColor = (temp: number) => {
-    if (temp >= 30) return 'bg-red-500';
-    if (temp >= 25) return 'bg-orange-500';
-    if (temp >= 20) return 'bg-amber-500';
-    if (temp >= 15) return 'bg-yellow-500';
-    if (temp >= 10) return 'bg-lime-500';
-    if (temp >= 5) return 'bg-green-500';
-    return 'bg-blue-500';
-  };
-
   return (
     <div className="animate-slide-up">
       <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6">7-Day Temperature Trend</h3>
-      <div className="relative">
-        {/* Chart container */}
-        <div className="flex items-end justify-between gap-2 px-2" style={{ height: '240px' }}>
-          {dailyData.map((data, index) => {
-            const heightPercent = ((data.high - minTemp) / tempRange) * 100;
-            
-            return (
-              <div key={index} className="flex-1 flex flex-col items-center justify-end gap-1 h-full relative">
-                {/* Bar */}
-                <div 
-                  className="relative w-full cursor-pointer transition-opacity hover:opacity-80 flex items-center justify-center"
-                  style={{ height: `${Math.max(heightPercent, 10)}%` }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  <div className={`absolute inset-0 w-full h-full ${getColor(data.high)}`}></div>
-                  
-                  {/* Temperature label inside bar */}
-                  <div className="relative z-10 text-xl md:text-2xl font-bold text-white drop-shadow-md">
-                    {data.high}°
-                  </div>
-                  
-                  {/* Tooltip */}
-                  {hoveredIndex === index && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white dark:bg-gray-800 p-3 shadow-lg border border-gray-200 dark:border-gray-600 whitespace-nowrap z-20">
-                      <p className="font-bold text-gray-900 dark:text-white text-sm">{data.day}, {data.date}</p>
-                      <p className="text-xs text-orange-600 dark:text-orange-400">High: {data.high}°</p>
-                      <p className="text-xs text-blue-600 dark:text-blue-400">Low: {data.low}°</p>
-                    </div>
-                  )}
-                </div>
-                
+      <div className="space-y-3">
+        {dailyData.map((data, index) => {
+          const barWidth = ((data.high - minTemp) / tempRange) * 100;
+          const isHovered = hoveredIndex === index;
+          
+          return (
+            <div 
+              key={index} 
+              className="relative"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <div className="flex items-center space-x-4">
                 {/* Day label */}
-                <div className="text-sm md:text-base font-semibold text-gray-700 dark:text-gray-300 pt-2 pb-1">
-                  {data.day}
+                <div className="w-20 flex-shrink-0">
+                  <p className="text-sm font-bold text-gray-800 dark:text-gray-200">
+                    {index === 0 ? 'Today' : data.day}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{data.date}</p>
+                </div>
+
+                {/* Temperature bar */}
+                <div className="flex-1 flex items-center space-x-3">
+                  {/* Low temp */}
+                  <div className="flex items-center space-x-1">
+                    <TrendingDown className="w-4 h-4 text-blue-500 dark:text-blue-400" />
+                    <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 w-8 text-right">
+                      {data.low}°
+                    </span>
+                  </div>
+
+                  {/* Visual bar */}
+                  <div className="flex-1 h-8 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden relative">
+                    <div 
+                      className={`h-full bg-sky-400 dark:bg-sky-500 rounded-full transition-all duration-300 ${
+                        isHovered ? 'opacity-100' : 'opacity-80'
+                      }`}
+                      style={{ width: `${Math.max(barWidth, 15)}%` }}
+                    ></div>
+                  </div>
+
+                  {/* High temp */}
+                  <div className="flex items-center space-x-1">
+                    <span className="text-sm font-bold text-orange-600 dark:text-orange-400 w-8">
+                      {data.high}°
+                    </span>
+                    <TrendingUp className="w-4 h-4 text-orange-500 dark:text-orange-400" />
+                  </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+
+              {/* Range indicator */}
+              {isHovered && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 -right-16 bg-white dark:bg-gray-800 px-3 py-1 rounded-lg shadow-lg border border-gray-200 dark:border-gray-600 whitespace-nowrap z-20">
+                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    Range: {data.range}°
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
