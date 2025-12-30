@@ -45,25 +45,50 @@ export const LightShowers: React.FC<{ className?: string }> = ({ className = '' 
       <line x1="860" y1="170" x2="853" y2="230" stroke="#6A9AB5" strokeWidth="2.5"/>
     </g>
     
-    {/* Mountains */}
-    <path d="M0 370 L200 300 L400 340 L600 280 L800 320 L1000 260 L1200 300 L1200 500 L0 500 Z" 
-          fill="#8095A5" opacity="0.6"/>
-    <path d="M0 400 L180 330 L360 380 L540 320 L720 370 L900 310 L1080 360 L1200 330 L1200 500 L0 500 Z" 
-          fill="#708595" opacity="0.7"/>
+    {/* Mountains - flat 2.0 */}
+    <g opacity="0.7">
+      <path d="M0 370 L110 310 L155 335 L0 390 Z" fill="#8EA2B2"/>
+      <path d="M155 335 L110 310 L250 295 L295 320 Z" fill="#7E92A2"/>
+      <path d="M295 320 L250 295 L390 285 L435 310 Z" fill="#8EA2B2"/>
+      <path d="M435 310 L390 285 L530 280 L575 305 Z" fill="#7E92A2"/>
+      <path d="M575 305 L530 280 L670 290 L715 315 Z" fill="#8EA2B2"/>
+      <path d="M715 315 L670 290 L810 295 L855 320 Z" fill="#7E92A2"/>
+      <path d="M855 320 L810 295 L950 300 L995 325 Z" fill="#8EA2B2"/>
+      <path d="M995 325 L950 300 L1090 305 L1200 330 Z" fill="#7E92A2"/>
+      <path d="M0 390 L155 335 L295 320 L435 310 L575 305 L715 315 L855 320 L995 325 L1200 330 L1200 500 L0 500 Z" fill="#6E8292"/>
+    </g>
+    <g opacity="0.78">
+      <path d="M0 400 L125 340 L165 365 L0 420 Z" fill="#7A8E9E"/>
+      <path d="M165 365 L125 340 L285 328 L325 353 Z" fill="#6A7E8E"/>
+      <path d="M325 353 L285 328 L445 320 L485 345 Z" fill="#7A8E9E"/>
+      <path d="M485 345 L445 320 L605 317 L645 342 Z" fill="#6A7E8E"/>
+      <path d="M645 342 L605 317 L765 325 L805 350 Z" fill="#7A8E9E"/>
+      <path d="M805 350 L765 325 L925 332 L965 357 Z" fill="#6A7E8E"/>
+      <path d="M965 357 L925 332 L1085 338 L1200 360 Z" fill="#7A8E9E"/>
+      <path d="M0 420 L165 365 L325 353 L485 345 L645 342 L805 350 L965 357 L1200 360 L1200 500 L0 500 Z" fill="#5A6E7E"/>
+    </g>
     
-    {/* Hills */}
-    <path d="M0 445 L300 425 L600 435 L900 420 L1200 430 L1200 500 L0 500 Z" 
-          fill="#628568" opacity="0.8"/>
-    <path d="M0 468 L400 458 L800 463 L1200 453 L1200 500 L0 500 Z" 
-          fill="#527558" opacity="0.85"/>
+    {/* Hills - flat 2.0 layered */}
+    <path d="M0 445 L150 435 L300 430 L450 425 L600 432 L750 427 L900 424 L1050 430 L1200 434 L1200 500 L0 500 Z" 
+          fill="#628568"/>
+    <path d="M0 445 L150 435 L300 430 L450 425 L600 432 L750 427 L900 424 L1050 430 L1200 434 L1200 468 L0 468 Z" 
+          fill="#527558" opacity="0.4"/>
+    <path d="M0 470 L200 465 L400 460 L600 464 L800 467 L1000 462 L1200 457 L1200 500 L0 500 Z" 
+          fill="#527558"/>
     
-    {/* Trees */}
-    <g opacity="0.75">
+    {/* Trees - flat 2.0 with depth */}
+    <g>
+      <ellipse cx="285" cy="488" rx="9" ry="3" fill="#4A6050" opacity="0.3"/>
       <rect x="280" y="455" width="10" height="30" fill="#5A4A3A"/>
-      <path d="M285 455 L268 455 L276.5 430 Z" fill="#2A4A30"/>
+      <rect x="280" y="455" width="3.5" height="30" fill="#4A3A2A"/>
+      <path d="M285 455 L270 455 L285 430 L300 455 Z" fill="#2A4A30"/>
+      <path d="M285 455 L270 455 L285 440 Z" fill="#1A3A20"/>
       
+      <ellipse cx="885.5" cy="485" rx="10" ry="3" fill="#4A6050" opacity="0.3"/>
       <rect x="880" y="450" width="11" height="32" fill="#5A4A3A"/>
-      <path d="M885.5 450 L867 450 L876.25 422 Z" fill="#2A4A30"/>
+      <rect x="880" y="450" width="4" height="32" fill="#4A3A2A"/>
+      <path d="M885.5 450 L869 450 L885.5 422 L902 450 Z" fill="#2A4A30"/>
+      <path d="M885.5 450 L869 450 L885.5 433 Z" fill="#1A3A20"/>
     </g>
   </svg>
 );
@@ -125,25 +150,50 @@ export const HeavyShowers: React.FC<{ className?: string }> = ({ className = '' 
       <line x1="1120" y1="163" x2="1110" y2="243" stroke="#5A8AA5" strokeWidth="3.5"/>
     </g>
     
-    {/* Mountains */}
-    <path d="M0 380 L200 310 L400 350 L600 290 L800 330 L1000 270 L1200 310 L1200 500 L0 500 Z" 
-          fill="#4A5A65" opacity="0.65"/>
-    <path d="M0 410 L180 340 L360 390 L540 330 L720 380 L900 320 L1080 370 L1200 340 L1200 500 L0 500 Z" 
-          fill="#3A4A55" opacity="0.75"/>
+    {/* Mountains - flat 2.0 */}
+    <g opacity="0.72">
+      <path d="M0 380 L110 315 L155 340 L0 400 Z" fill="#546270"/>
+      <path d="M155 340 L110 315 L250 300 L295 325 Z" fill="#445260"/>
+      <path d="M295 325 L250 300 L390 290 L435 315 Z" fill="#546270"/>
+      <path d="M435 315 L390 290 L530 285 L575 310 Z" fill="#445260"/>
+      <path d="M575 310 L530 285 L670 295 L715 320 Z" fill="#546270"/>
+      <path d="M715 320 L670 295 L810 300 L855 325 Z" fill="#445260"/>
+      <path d="M855 325 L810 300 L950 305 L995 330 Z" fill="#546270"/>
+      <path d="M995 330 L950 305 L1090 310 L1200 335 Z" fill="#445260"/>
+      <path d="M0 400 L155 340 L295 325 L435 315 L575 310 L715 320 L855 325 L995 330 L1200 335 L1200 500 L0 500 Z" fill="#344250"/>
+    </g>
+    <g opacity="0.8">
+      <path d="M0 410 L125 350 L165 375 L0 430 Z" fill="#3E4E5C"/>
+      <path d="M165 375 L125 350 L285 338 L325 363 Z" fill="#2E3E4C"/>
+      <path d="M325 363 L285 338 L445 330 L485 355 Z" fill="#3E4E5C"/>
+      <path d="M485 355 L445 330 L605 327 L645 352 Z" fill="#2E3E4C"/>
+      <path d="M645 352 L605 327 L765 335 L805 360 Z" fill="#3E4E5C"/>
+      <path d="M805 360 L765 335 L925 342 L965 367 Z" fill="#2E3E4C"/>
+      <path d="M965 367 L925 342 L1085 348 L1200 370 Z" fill="#3E4E5C"/>
+      <path d="M0 430 L165 375 L325 363 L485 355 L645 352 L805 360 L965 367 L1200 370 L1200 500 L0 500 Z" fill="#1E2E3C"/>
+    </g>
     
-    {/* Hills */}
-    <path d="M0 450 L300 430 L600 440 L900 425 L1200 435 L1200 500 L0 500 Z" 
-          fill="#3A5540" opacity="0.8"/>
-    <path d="M0 470 L400 460 L800 465 L1200 455 L1200 500 L0 500 Z" 
-          fill="#2A4530" opacity="0.85"/>
+    {/* Hills - flat 2.0 layered */}
+    <path d="M0 450 L150 440 L300 435 L450 430 L600 437 L750 432 L900 429 L1050 435 L1200 439 L1200 500 L0 500 Z" 
+          fill="#3A5540"/>
+    <path d="M0 450 L150 440 L300 435 L450 430 L600 437 L750 432 L900 429 L1050 435 L1200 439 L1200 472 L0 472 Z" 
+          fill="#2A4530" opacity="0.4"/>
+    <path d="M0 473 L200 468 L400 463 L600 467 L800 470 L1000 465 L1200 460 L1200 500 L0 500 Z" 
+          fill="#2A4530"/>
     
-    {/* Trees */}
-    <g opacity="0.6">
+    {/* Trees - flat 2.0 with depth */}
+    <g>
+      <ellipse cx="325" cy="488" rx="9" ry="2.5" fill="#1A3020" opacity="0.35"/>
       <rect x="320" y="458" width="10" height="28" fill="#3A2A1A"/>
-      <path d="M325 458 L308 458 L316.5 435 Z" fill="#1A3010"/>
+      <rect x="320" y="458" width="3.5" height="28" fill="#2A1A0A"/>
+      <path d="M325 458 L310 458 L325 435 L340 458 Z" fill="#1A3010"/>
+      <path d="M325 458 L310 458 L325 444 Z" fill="#0A2000"/>
       
+      <ellipse cx="925.5" cy="488" rx="10" ry="2.5" fill="#1A3020" opacity="0.35"/>
       <rect x="920" y="456" width="11" height="30" fill="#3A2A1A"/>
-      <path d="M925.5 456 L907 456 L916.25 432 Z" fill="#1A3010"/>
+      <rect x="920" y="456" width="4" height="30" fill="#2A1A0A"/>
+      <path d="M925.5 456 L908 456 L925.5 432 L943 456 Z" fill="#1A3010"/>
+      <path d="M925.5 456 L908 456 L925.5 441 Z" fill="#0A2000"/>
     </g>
   </svg>
 );
@@ -208,25 +258,50 @@ export const Thunderstorm: React.FC<{ className?: string }> = ({ className = '' 
       <line x1="1140" y1="182" x2="1128" y2="272" stroke="#5080A0" strokeWidth="3.5"/>
     </g>
     
-    {/* Mountains barely visible */}
-    <path d="M0 390 L200 320 L400 360 L600 300 L800 340 L1000 280 L1200 320 L1200 500 L0 500 Z" 
-          fill="#2A3A45" opacity="0.6"/>
-    <path d="M0 420 L180 350 L360 400 L540 340 L720 390 L900 330 L1080 380 L1200 350 L1200 500 L0 500 Z" 
-          fill="#1A2A35" opacity="0.7"/>
+    {/* Mountains barely visible - flat 2.0 */}
+    <g opacity="0.68">
+      <path d="M0 390 L110 325 L155 350 L0 410 Z" fill="#2E3E4C"/>
+      <path d="M155 350 L110 325 L250 310 L295 335 Z" fill="#1E2E3C"/>
+      <path d="M295 335 L250 310 L390 300 L435 325 Z" fill="#2E3E4C"/>
+      <path d="M435 325 L390 300 L530 295 L575 320 Z" fill="#1E2E3C"/>
+      <path d="M575 320 L530 295 L670 305 L715 330 Z" fill="#2E3E4C"/>
+      <path d="M715 330 L670 305 L810 310 L855 335 Z" fill="#1E2E3C"/>
+      <path d="M855 335 L810 310 L950 315 L995 340 Z" fill="#2E3E4C"/>
+      <path d="M995 340 L950 315 L1090 320 L1200 345 Z" fill="#1E2E3C"/>
+      <path d="M0 410 L155 350 L295 335 L435 325 L575 320 L715 330 L855 335 L995 340 L1200 345 L1200 500 L0 500 Z" fill="#0E1E2C"/>
+    </g>
+    <g opacity="0.75">
+      <path d="M0 420 L125 360 L165 385 L0 440 Z" fill="#1E2E3C"/>
+      <path d="M165 385 L125 360 L285 348 L325 373 Z" fill="#0E1E2C"/>
+      <path d="M325 373 L285 348 L445 340 L485 365 Z" fill="#1E2E3C"/>
+      <path d="M485 365 L445 340 L605 337 L645 362 Z" fill="#0E1E2C"/>
+      <path d="M645 362 L605 337 L765 345 L805 370 Z" fill="#1E2E3C"/>
+      <path d="M805 370 L765 345 L925 352 L965 377 Z" fill="#0E1E2C"/>
+      <path d="M965 377 L925 352 L1085 358 L1200 380 Z" fill="#1E2E3C"/>
+      <path d="M0 440 L165 385 L325 373 L485 365 L645 362 L805 370 L965 377 L1200 380 L1200 500 L0 500 Z" fill="#091525"/>
+    </g>
     
-    {/* Very dark hills */}
-    <path d="M0 455 L300 435 L600 445 L900 430 L1200 440 L1200 500 L0 500 Z" 
-          fill="#1A2820" opacity="0.85"/>
-    <path d="M0 472 L400 462 L800 467 L1200 457 L1200 500 L0 500 Z" 
-          fill="#0A1810" opacity="0.9"/>
+    {/* Very dark hills - flat 2.0 layered */}
+    <path d="M0 455 L150 445 L300 440 L450 435 L600 442 L750 437 L900 434 L1050 440 L1200 444 L1200 500 L0 500 Z" 
+          fill="#1A2820"/>
+    <path d="M0 455 L150 445 L300 440 L450 435 L600 442 L750 437 L900 434 L1050 440 L1200 444 L1200 478 L0 478 Z" 
+          fill="#0A1810" opacity="0.4"/>
+    <path d="M0 480 L200 475 L400 470 L600 474 L800 477 L1000 472 L1200 467 L1200 500 L0 500 Z" 
+          fill="#0A1810"/>
     
-    {/* Tree silhouettes */}
-    <g opacity="0.5">
+    {/* Tree silhouettes - flat 2.0 */}
+    <g>
+      <ellipse cx="404.5" cy="490" rx="8" ry="2" fill="#040A08" opacity="0.45"/>
       <rect x="400" y="462" width="9" height="25" fill="#0A0A0A"/>
-      <path d="M404.5 462 L388 462 L396.25 442 Z" fill="#050505"/>
+      <rect x="400" y="462" width="3.2" height="25" fill="#000000"/>
+      <path d="M404.5 462 L390 462 L404.5 442 L419 462 Z" fill="#050505"/>
+      <path d="M404.5 462 L390 462 L404.5 450 Z" fill="#020202"/>
       
+      <ellipse cx="1005" cy="490" rx="9" ry="2" fill="#040A08" opacity="0.45"/>
       <rect x="1000" y="460" width="10" height="28" fill="#0A0A0A"/>
-      <path d="M1005 460 L988 460 L996.5 437 Z" fill="#050505"/>
+      <rect x="1000" y="460" width="3.5" height="28" fill="#000000"/>
+      <path d="M1005 460 L990 460 L1005 437 L1020 460 Z" fill="#050505"/>
+      <path d="M1005 460 L990 460 L1005 446 Z" fill="#020202"/>
     </g>
   </svg>
 );
@@ -278,25 +353,50 @@ export const LightShowersNight: React.FC<{ className?: string }> = ({ className 
       <line x1="860" y1="170" x2="853" y2="230" stroke="#4a6a85" strokeWidth="2.5"/>
     </g>
     
-    {/* Mountains */}
-    <path d="M0 370 L200 300 L400 340 L600 280 L800 320 L1000 260 L1200 300 L1200 500 L0 500 Z" 
-          fill="#2a3a45" opacity="0.7"/>
-    <path d="M0 400 L180 330 L360 380 L540 320 L720 370 L900 310 L1080 360 L1200 330 L1200 500 L0 500 Z" 
-          fill="#1f2f3a" opacity="0.75"/>
+    {/* Mountains - flat 2.0 */}
+    <g opacity="0.75">
+      <path d="M0 370 L110 310 L155 335 L0 390 Z" fill="#2E3E4C"/>
+      <path d="M155 335 L110 310 L250 295 L295 320 Z" fill="#242F3D"/>
+      <path d="M295 320 L250 295 L390 285 L435 310 Z" fill="#2E3E4C"/>
+      <path d="M435 310 L390 285 L530 280 L575 305 Z" fill="#242F3D"/>
+      <path d="M575 305 L530 280 L670 290 L715 315 Z" fill="#2E3E4C"/>
+      <path d="M715 315 L670 290 L810 295 L855 320 Z" fill="#242F3D"/>
+      <path d="M855 320 L810 295 L950 300 L995 325 Z" fill="#2E3E4C"/>
+      <path d="M995 325 L950 300 L1090 305 L1200 330 Z" fill="#242F3D"/>
+      <path d="M0 390 L155 335 L295 320 L435 310 L575 305 L715 315 L855 320 L995 325 L1200 330 L1200 500 L0 500 Z" fill="#1A2530"/>
+    </g>
+    <g opacity="0.8">
+      <path d="M0 400 L125 340 L165 365 L0 420 Z" fill="#22333E"/>
+      <path d="M165 365 L125 340 L285 328 L325 353 Z" fill="#18262F"/>
+      <path d="M325 353 L285 328 L445 320 L485 345 Z" fill="#22333E"/>
+      <path d="M485 345 L445 320 L605 317 L645 342 Z" fill="#18262F"/>
+      <path d="M645 342 L605 317 L765 325 L805 350 Z" fill="#22333E"/>
+      <path d="M805 350 L765 325 L925 332 L965 357 Z" fill="#18262F"/>
+      <path d="M965 357 L925 332 L1085 338 L1200 360 Z" fill="#22333E"/>
+      <path d="M0 420 L165 365 L325 353 L485 345 L645 342 L805 350 L965 357 L1200 360 L1200 500 L0 500 Z" fill="#0E1C28"/>
+    </g>
     
-    {/* Hills */}
-    <path d="M0 445 L300 425 L600 435 L900 420 L1200 430 L1200 500 L0 500 Z" 
-          fill="#2a3a30" opacity="0.8"/>
-    <path d="M0 468 L400 458 L800 463 L1200 453 L1200 500 L0 500 Z" 
-          fill="#1f2f25" opacity="0.85"/>
+    {/* Hills - flat 2.0 layered */}
+    <path d="M0 445 L150 435 L300 430 L450 425 L600 432 L750 427 L900 424 L1050 430 L1200 434 L1200 500 L0 500 Z" 
+          fill="#2A3A30"/>
+    <path d="M0 445 L150 435 L300 430 L450 425 L600 432 L750 427 L900 424 L1050 430 L1200 434 L1200 468 L0 468 Z" 
+          fill="#1F2F25" opacity="0.4"/>
+    <path d="M0 470 L200 465 L400 460 L600 464 L800 467 L1000 462 L1200 457 L1200 500 L0 500 Z" 
+          fill="#1F2F25"/>
     
-    {/* Trees */}
-    <g opacity="0.65">
-      <rect x="280" y="455" width="10" height="30" fill="#2a2520"/>
-      <path d="M285 455 L268 455 L276.5 430 Z" fill="#1a2518"/>
+    {/* Trees - flat 2.0 with depth */}
+    <g>
+      <ellipse cx="285" cy="488" rx="9" ry="3" fill="#1A2A20" opacity="0.35"/>
+      <rect x="280" y="455" width="10" height="30" fill="#2A2520"/>
+      <rect x="280" y="455" width="3.5" height="30" fill="#1A1510"/>
+      <path d="M285 455 L270 455 L285 430 L300 455 Z" fill="#1A2518"/>
+      <path d="M285 455 L270 455 L285 440 Z" fill="#0A1508"/>
       
-      <rect x="880" y="450" width="11" height="32" fill="#2a2520"/>
-      <path d="M885.5 450 L867 450 L876.25 422 Z" fill="#1a2518"/>
+      <ellipse cx="885.5" cy="485" rx="10" ry="3" fill="#1A2A20" opacity="0.35"/>
+      <rect x="880" y="450" width="11" height="32" fill="#2A2520"/>
+      <rect x="880" y="450" width="4" height="32" fill="#1A1510"/>
+      <path d="M885.5 450 L869 450 L885.5 422 L902 450 Z" fill="#1A2518"/>
+      <path d="M885.5 450 L869 450 L885.5 433 Z" fill="#0A1508"/>
     </g>
   </svg>
 );
@@ -360,25 +460,50 @@ export const HeavyShowersNight: React.FC<{ className?: string }> = ({ className 
       <line x1="1120" y1="163" x2="1110" y2="243" stroke="#3a5a75" strokeWidth="3.5"/>
     </g>
     
-    {/* Mountains */}
-    <path d="M0 380 L200 310 L400 350 L600 290 L800 330 L1000 270 L1200 310 L1200 500 L0 500 Z" 
-          fill="#1a2530" opacity="0.7"/>
-    <path d="M0 410 L180 340 L360 390 L540 330 L720 380 L900 320 L1080 370 L1200 340 L1200 500 L0 500 Z" 
-          fill="#0f1a25" opacity="0.8"/>
+    {/* Mountains - flat 2.0 */}
+    <g opacity="0.75">
+      <path d="M0 380 L110 315 L155 340 L0 400 Z" fill="#1E2D38"/>
+      <path d="M155 340 L110 315 L250 300 L295 325 Z" fill="#14202B"/>
+      <path d="M295 325 L250 300 L390 290 L435 315 Z" fill="#1E2D38"/>
+      <path d="M435 315 L390 290 L530 285 L575 310 Z" fill="#14202B"/>
+      <path d="M575 310 L530 285 L670 295 L715 320 Z" fill="#1E2D38"/>
+      <path d="M715 320 L670 295 L810 300 L855 325 Z" fill="#14202B"/>
+      <path d="M855 325 L810 300 L950 305 L995 330 Z" fill="#1E2D38"/>
+      <path d="M995 330 L950 305 L1090 310 L1200 335 Z" fill="#14202B"/>
+      <path d="M0 400 L155 340 L295 325 L435 315 L575 310 L715 320 L855 325 L995 330 L1200 335 L1200 500 L0 500 Z" fill="#0A161E"/>
+    </g>
+    <g opacity="0.82">
+      <path d="M0 410 L125 350 L165 375 L0 430 Z" fill="#12212C"/>
+      <path d="M165 375 L125 350 L285 338 L325 363 Z" fill="#08141F"/>
+      <path d="M325 363 L285 338 L445 330 L485 355 Z" fill="#12212C"/>
+      <path d="M485 355 L445 330 L605 327 L645 352 Z" fill="#08141F"/>
+      <path d="M645 352 L605 327 L765 335 L805 360 Z" fill="#12212C"/>
+      <path d="M805 360 L765 335 L925 342 L965 367 Z" fill="#08141F"/>
+      <path d="M965 367 L925 342 L1085 348 L1200 370 Z" fill="#12212C"/>
+      <path d="M0 430 L165 375 L325 363 L485 355 L645 352 L805 360 L965 367 L1200 370 L1200 500 L0 500 Z" fill="#040F18"/>
+    </g>
     
-    {/* Hills */}
-    <path d="M0 450 L300 430 L600 440 L900 425 L1200 435 L1200 500 L0 500 Z" 
-          fill="#1a2520" opacity="0.85"/>
-    <path d="M0 470 L400 460 L800 465 L1200 455 L1200 500 L0 500 Z" 
-          fill="#0f1a15" opacity="0.9"/>
+    {/* Hills - flat 2.0 layered */}
+    <path d="M0 450 L150 440 L300 435 L450 430 L600 437 L750 432 L900 429 L1050 435 L1200 439 L1200 500 L0 500 Z" 
+          fill="#1A2520"/>
+    <path d="M0 450 L150 440 L300 435 L450 430 L600 437 L750 432 L900 429 L1050 435 L1200 439 L1200 472 L0 472 Z" 
+          fill="#0F1A15" opacity="0.4"/>
+    <path d="M0 473 L200 468 L400 463 L600 467 L800 470 L1000 465 L1200 460 L1200 500 L0 500 Z" 
+          fill="#0F1A15"/>
     
-    {/* Trees */}
-    <g opacity="0.5">
-      <rect x="320" y="458" width="10" height="28" fill="#0a0a0a"/>
-      <path d="M325 458 L308 458 L316.5 435 Z" fill="#050f05"/>
+    {/* Trees - flat 2.0 with depth */}
+    <g>
+      <ellipse cx="325" cy="488" rx="9" ry="2.5" fill="#0A1510" opacity="0.4"/>
+      <rect x="320" y="458" width="10" height="28" fill="#0A0A0A"/>
+      <rect x="320" y="458" width="3.5" height="28" fill="#000000"/>
+      <path d="M325 458 L310 458 L325 435 L340 458 Z" fill="#050F05"/>
+      <path d="M325 458 L310 458 L325 444 Z" fill="#020802"/>
       
-      <rect x="920" y="456" width="11" height="30" fill="#0a0a0a"/>
-      <path d="M925.5 456 L907 456 L916.25 432 Z" fill="#050f05"/>
+      <ellipse cx="925.5" cy="488" rx="10" ry="2.5" fill="#0A1510" opacity="0.4"/>
+      <rect x="920" y="456" width="11" height="30" fill="#0A0A0A"/>
+      <rect x="920" y="456" width="4" height="30" fill="#000000"/>
+      <path d="M925.5 456 L908 456 L925.5 432 L943 456 Z" fill="#050F05"/>
+      <path d="M925.5 456 L908 456 L925.5 441 Z" fill="#020802"/>
     </g>
   </svg>
 );
@@ -445,25 +570,50 @@ export const ThunderstormNight: React.FC<{ className?: string }> = ({ className 
       <line x1="1140" y1="182" x2="1128" y2="272" stroke="#2a4a60" strokeWidth="3.5"/>
     </g>
     
-    {/* Mountains barely visible */}
-    <path d="M0 390 L200 320 L400 360 L600 300 L800 340 L1000 280 L1200 320 L1200 500 L0 500 Z" 
-          fill="#0f1a25" opacity="0.65"/>
-    <path d="M0 420 L180 350 L360 400 L540 340 L720 390 L900 330 L1080 380 L1200 350 L1200 500 L0 500 Z" 
-          fill="#050f1a" opacity="0.75"/>
+    {/* Mountains barely visible - flat 2.0 */}
+    <g opacity="0.7">
+      <path d="M0 390 L110 325 L155 350 L0 410 Z" fill="#0F1E28"/>
+      <path d="M155 350 L110 325 L250 310 L295 335 Z" fill="#08131D"/>
+      <path d="M295 335 L250 310 L390 300 L435 325 Z" fill="#0F1E28"/>
+      <path d="M435 325 L390 300 L530 295 L575 320 Z" fill="#08131D"/>
+      <path d="M575 320 L530 295 L670 305 L715 330 Z" fill="#0F1E28"/>
+      <path d="M715 330 L670 305 L810 310 L855 335 Z" fill="#08131D"/>
+      <path d="M855 335 L810 310 L950 315 L995 340 Z" fill="#0F1E28"/>
+      <path d="M995 340 L950 315 L1090 320 L1200 345 Z" fill="#08131D"/>
+      <path d="M0 410 L155 350 L295 335 L435 325 L575 320 L715 330 L855 335 L995 340 L1200 345 L1200 500 L0 500 Z" fill="#040D15"/>
+    </g>
+    <g opacity="0.77">
+      <path d="M0 420 L125 360 L165 385 L0 440 Z" fill="#08141F"/>
+      <path d="M165 385 L125 360 L285 348 L325 373 Z" fill="#040A15"/>
+      <path d="M325 373 L285 348 L445 340 L485 365 Z" fill="#08141F"/>
+      <path d="M485 365 L445 340 L605 337 L645 362 Z" fill="#040A15"/>
+      <path d="M645 362 L605 337 L765 345 L805 370 Z" fill="#08141F"/>
+      <path d="M805 370 L765 345 L925 352 L965 377 Z" fill="#040A15"/>
+      <path d="M965 377 L925 352 L1085 358 L1200 380 Z" fill="#08141F"/>
+      <path d="M0 440 L165 385 L325 373 L485 365 L645 362 L805 370 L965 377 L1200 380 L1200 500 L0 500 Z" fill="#02070E"/>
+    </g>
     
-    {/* Very dark hills */}
-    <path d="M0 455 L300 435 L600 445 L900 430 L1200 440 L1200 500 L0 500 Z" 
-          fill="#050f08" opacity="0.9"/>
-    <path d="M0 472 L400 462 L800 467 L1200 457 L1200 500 L0 500 Z" 
-          fill="#000a05" opacity="0.95"/>
+    {/* Very dark hills - flat 2.0 layered */}
+    <path d="M0 455 L150 445 L300 440 L450 435 L600 442 L750 437 L900 434 L1050 440 L1200 444 L1200 500 L0 500 Z" 
+          fill="#050F08"/>
+    <path d="M0 455 L150 445 L300 440 L450 435 L600 442 L750 437 L900 434 L1050 440 L1200 444 L1200 478 L0 478 Z" 
+          fill="#000A05" opacity="0.5"/>
+    <path d="M0 480 L200 475 L400 470 L600 474 L800 477 L1000 472 L1200 467 L1200 500 L0 500 Z" 
+          fill="#000A05"/>
     
-    {/* Tree silhouettes */}
-    <g opacity="0.4">
+    {/* Tree silhouettes - flat 2.0 */}
+    <g>
+      <ellipse cx="404.5" cy="490" rx="8" ry="2" fill="#000000" opacity="0.5"/>
       <rect x="400" y="462" width="9" height="25" fill="#000000"/>
-      <path d="M404.5 462 L388 462 L396.25 442 Z" fill="#000000"/>
+      <rect x="400" y="462" width="3.2" height="25" fill="#000000"/>
+      <path d="M404.5 462 L390 462 L404.5 442 L419 462 Z" fill="#000000"/>
+      <path d="M404.5 462 L390 462 L404.5 450 Z" fill="#000000"/>
       
+      <ellipse cx="1005" cy="490" rx="9" ry="2" fill="#000000" opacity="0.5"/>
       <rect x="1000" y="460" width="10" height="28" fill="#000000"/>
-      <path d="M1005 460 L988 460 L996.5 437 Z" fill="#000000"/>
+      <rect x="1000" y="460" width="3.5" height="28" fill="#000000"/>
+      <path d="M1005 460 L990 460 L1005 437 L1020 460 Z" fill="#000000"/>
+      <path d="M1005 460 L990 460 L1005 446 Z" fill="#000000"/>
     </g>
   </svg>
 );
