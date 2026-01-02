@@ -27,6 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchWeatherPreview = async (locations: Location[]) => {
     const locationsWithWeather = await Promise.all(
@@ -88,6 +89,19 @@ const SearchBar: React.FC<SearchBarProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleSelectLocation = (location: Location) => {
     onLocationSelect(location);
     storageService.addRecentSearch(location);
@@ -97,7 +111,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto animate-fade-in z-50">
+    <div ref={searchContainerRef} className="relative w-full max-w-2xl mx-auto animate-fade-in z-50">
       <div className="flex space-x-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white w-5 h-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
