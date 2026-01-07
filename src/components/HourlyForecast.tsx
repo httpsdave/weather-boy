@@ -43,13 +43,6 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
     setIsDragging(false);
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    if (!scrollContainerRef.current) return;
-    e.preventDefault();
-    e.stopPropagation();
-    scrollContainerRef.current.scrollLeft += e.deltaY;
-  };
-
   React.useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
@@ -80,7 +73,6 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ hourly, temperatureUnit
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
-        onWheel={handleWheel}
         className="overflow-x-auto pb-3 -mx-6 md:mx-0 px-6 md:px-0 select-none cursor-grab active:cursor-grabbing scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
